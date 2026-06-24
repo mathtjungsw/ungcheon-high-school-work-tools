@@ -1,4 +1,15 @@
 const STORAGE_KEY = "ungcheon-high-school-work-tools";
+const BUILT_IN_TOOLS = [
+  {
+    id: "builtin-course-selection",
+    title: "과목 선택 도우미",
+    url: "https://mathtjungsw.github.io/ungcheon-high-school-work-tools/course-selection.html",
+    description: "2026학년도 입학생용 선택과목 추천·선택 조건 검증·과목 설명 도구",
+    colorIndex: 1,
+    createdAt: "2026-06-24T00:00:00.000Z",
+    isBuiltIn: true,
+  },
+];
 const COLOR_PALETTE = [
   ["#2970ff", "#155eef"],
   ["#7f56d9", "#6941c6"],
@@ -47,10 +58,18 @@ let toastTimer;
 function loadTools() {
   try {
     const savedTools = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return Array.isArray(savedTools) ? savedTools : [];
+    return mergeBuiltInTools(Array.isArray(savedTools) ? savedTools : []);
   } catch {
-    return [];
+    return [...BUILT_IN_TOOLS];
   }
+}
+
+function mergeBuiltInTools(tools) {
+  const builtInIds = new Set(BUILT_IN_TOOLS.map((tool) => tool.id));
+  return [
+    ...BUILT_IN_TOOLS,
+    ...tools.filter((tool) => !builtInIds.has(tool.id)),
+  ];
 }
 
 function saveTools() {
@@ -102,6 +121,7 @@ function renderTools() {
     const fragment = elements.cardTemplate.content.cloneNode(true);
     const card = fragment.querySelector(".tool-card");
     const icon = fragment.querySelector(".tool-icon");
+    const menuWrap = fragment.querySelector(".card-menu-wrap");
     const menuButton = fragment.querySelector(".menu-button");
     const menu = fragment.querySelector(".card-menu");
     const editButton = fragment.querySelector(".edit-button");
@@ -118,6 +138,10 @@ function renderTools() {
     description.textContent = tool.description || "설명이 등록되지 않았습니다.";
     link.href = tool.url;
     link.setAttribute("aria-label", `${tool.title} 바로가기 (새 창)`);
+
+    if (tool.isBuiltIn) {
+      menuWrap.hidden = true;
+    }
 
     menuButton.addEventListener("click", (event) => {
       event.stopPropagation();
@@ -332,10 +356,10 @@ async function restoreBackup(file) {
         createdAt: typeof tool.createdAt === "string" ? tool.createdAt : new Date().toISOString(),
       }));
 
-    state.tools = validTools;
+    state.tools = mergeBuiltInTools(validTools);
     saveTools();
     renderTools();
-    showToast(`웹툴 ${validTools.length}개를 불러왔습니다.`);
+    showToast(`웹툴 ${state.tools.length}개를 불러왔습니다.`);
   } catch {
     showToast("올바른 백업 파일이 아닙니다.");
   } finally {

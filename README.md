@@ -2,6 +2,11 @@
 
 교직원이 자주 사용하는 업무용 웹사이트와 웹툴을 한곳에서 관리하고 바로 열 수 있는 정적 웹페이지입니다.
 
+## 바로가기
+
+- [웅천고등학교 업무 웹툴 모음](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/)
+- [과목 선택 도우미](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/course-selection.html)
+
 ## 주요 기능
 
 - 웹툴 제목, 링크, 설명 등록
