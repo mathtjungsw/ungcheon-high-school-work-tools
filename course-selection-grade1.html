@@ -53,11 +53,40 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .validation-title-line b{font-size:15px}
 .validation-count-pill{display:inline-flex;align-items:center;border:1px solid currentColor;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;background:rgba(255,255,255,.72)}
 .validation-detail{color:inherit;margin-top:6px;font-size:12px}
+/* 카카오 공유 기능 시작 */
+.btn.kakao-share{background:#fee500;color:#191919;border-color:#191919}
+.btn.kakao-share:hover{background:#f5dc00}
+.btn:disabled{cursor:wait;opacity:.68;filter:none}
+.share-card-stage{position:fixed;left:-10000px;top:0;width:720px;pointer-events:none;z-index:-1}
+.second-year-share-card{width:720px;padding:44px;background:#f5f8fd;color:#111827;font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif}
+.share-card-sheet{overflow:hidden;border:2px solid #172033;border-radius:22px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.12)}
+.share-card-head{padding:34px 36px 28px;background:linear-gradient(135deg,#123f91,#0b66c3);color:#fff}
+.share-card-kicker{margin:0 0 7px;font-size:18px;font-weight:800;opacity:.86}
+.share-card-head h2{margin:0;font-size:36px;line-height:1.25;letter-spacing:-.045em}
+.share-card-profile{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;padding:26px 36px;border-bottom:2px solid #d9e3f2;background:#f8fbff}
+.share-card-field{min-width:0}
+.share-card-field b{display:block;margin-bottom:4px;color:#526277;font-size:15px}
+.share-card-field span{display:block;font-size:21px;font-weight:900;overflow-wrap:anywhere}
+.share-card-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:22px 36px}
+.share-card-metric{border:1.5px solid #9aabc1;border-radius:12px;padding:14px 10px;text-align:center;background:#f8fbff}
+.share-card-metric b{display:block;color:#526277;font-size:14px}
+.share-card-metric strong{display:block;margin-top:3px;color:#123f91;font-size:24px}
+.share-card-groups{display:grid;gap:14px;padding:2px 36px 30px}
+.share-card-group{border:1.7px solid #64748b;border-radius:14px;overflow:hidden}
+.share-card-group-head{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;background:#e6eefb;color:#123f91;font-size:19px;font-weight:900}
+.share-card-subjects{display:flex;flex-wrap:wrap;gap:9px;padding:15px 16px}
+.share-card-subject{max-width:100%;border:1px solid #a9b8ca;border-radius:9px;padding:8px 10px;background:#fff;font-size:17px;font-weight:800;overflow-wrap:anywhere}
+.share-card-subject small{display:block;margin-top:2px;color:#64748b;font-size:12px;font-weight:700}
+.share-card-empty{padding:5px;color:#64748b;font-size:16px}
+.share-card-foot{display:flex;justify-content:space-between;gap:18px;padding:17px 36px;border-top:2px solid #d9e3f2;background:#f8fbff;color:#526277;font-size:14px;font-weight:800}
+/* 카카오 공유 기능 끝 */
 @media(max-width:780px){.validation-split{grid-template-columns:1fr}}
 @media(max-width:930px){.row{grid-template-columns:1fr 1fr}.row .btn{height:42px}.result-head{grid-template-columns:1fr}.summary{grid-template-columns:repeat(3,1fr)}.validation-grid{grid-template-columns:repeat(4,1fr)}.rec-lists{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.leaflet-section-head,.leaflet-toggle-head{align-items:flex-start;flex-direction:column}.leaflet-title-note{margin-left:0;margin-top:6px}.leaflet-section-action,.leaflet-section-action .toggle-btn{width:100%}.toggle-btn{width:100%}.leaflet-toggle-head .leaflet-subtitle{margin-left:0}.wrap{padding:10px 7px 38px}.hero{padding:16px 13px}.hero p{margin-left:0}.panel{padding:11px}.row,.summary,.rec-lists,.selected-list{grid-template-columns:1fr}.validation-grid{grid-template-columns:repeat(3,1fr)}.footer-actions{width:100%;justify-content:stretch}.footer-actions .btn{flex:1}.leaflet-title{font-size:21px}.leaflet-subtitle{margin-left:0}.leaflet-table{min-width:800px}.modal-backdrop{padding:8px}.desc-box{max-height:94vh}}
 @media print{@page{margin:9mm}.first-year-toggle-card.collapsed,.third-year-toggle-card.collapsed{display:none!important}.toggle-btn{display:none!important}body{background:#fff;font-size:10.5px}.no-print,.toast,.modal-backdrop,.tabs,.legend{display:none!important}.wrap{max-width:none;padding:0}.hero{box-shadow:none;border-radius:0;padding:10px;margin:0 0 7px}.hero h1{font-size:22px}.hero p{font-size:11px;margin-left:32px}.panel{box-shadow:none;margin:6px 0;padding:8px;border:1px solid #111}.summary{grid-template-columns:repeat(5,1fr)}.summary-card{padding:6px}.summary-card strong{font-size:16px}.leaflet-section{break-inside:avoid;page-break-inside:avoid}.leaflet-title{font-size:20px;margin-bottom:5px}.leaflet-subtitle{font-size:10px;margin-bottom:5px}.leaflet-table-wrap{overflow:visible;border-width:1.5px}.leaflet-table{min-width:0;font-size:9.5px}.leaflet-table th,.leaflet-table td{padding:3px 4px;border-width:.8px}.leaflet-table col.c-side{width:11%}.leaflet-table col.c-cat{width:10%}.leaflet-table col.c-subject{width:27%}.leaflet-table col.c-eval{width:13%}.leaflet-table col.c-sem{width:13%}.leaflet-table col.c-rule{width:9%}.leaf-group-cell{font-size:14px}.leaf-group-cell .credit{font-size:13px}.leaf-rule{font-size:13px}.leaf-check{width:42px;height:20px;border-radius:5px}.leaf-info{display:none}.leaf-footnote{font-size:11px;margin-top:5px}.leaf-footnote strong{font-size:13px}.selected-list{grid-template-columns:repeat(3,1fr)}.sem-list{padding:6px}.resultPanel{display:none!important}}
 </style>
+<script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script defer src="https://t1.kakaocdn.net/kakao_js_sdk/2.8.1/kakao.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="wrap">
@@ -107,6 +136,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
         <div class="small">선택 결과 중심으로 인쇄하거나 브라우저의 PDF 저장 기능을 이용할 수 있습니다.</div>
       </div>
       <div class="footer-actions no-print">
+        <button class="btn kakao-share" id="kakaoShareBtn" type="button">카카오톡 공유하기</button>
         <button class="btn ghost" id="resetBtn" type="button">선택 초기화</button>
         <button class="btn secondary" id="printBtn" type="button">인쇄 / PDF 저장</button>
       </div>
@@ -114,6 +144,11 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     <div id="selectedSummary" style="margin-top:12px"></div>
   </section>
 </div>
+<!-- 카카오 공유 기능 시작: 화면 밖의 DOM을 html2canvas로 렌더링합니다. -->
+<div class="share-card-stage" id="secondYearShareStage" aria-hidden="true">
+  <article class="second-year-share-card" id="secondYearShareCard"></article>
+</div>
+<!-- 카카오 공유 기능 끝 -->
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="modal-backdrop no-print" id="descModal" role="dialog" aria-modal="true" aria-labelledby="descTitle">
   <article class="desc-box" id="descBox">
@@ -2010,6 +2045,186 @@ function countKoreanMathEnglishChoices(map = state.selected) {
   return Object.values(map).filter((subject) => !isFixed(subject) && KOREAN_MATH_ENGLISH_CATEGORIES.has(subject.cat)).length;
 }
 
+// 카카오 공유 기능 시작
+// Kakao Developers에서 발급한 JavaScript 키로 바꿔 주세요.
+const KAKAO_APP_KEY = "YOUR_JAVASCRIPT_KEY_HERE";
+
+function buildSecondYearShareData() {
+  const groups = ["A", "B", "C"];
+  const choices = selectedChoicesForGroups(groups)
+    .sort((a, b) => groups.indexOf(a.group) - groups.indexOf(b.group)
+      || SEMESTERS.indexOf(a.sem) - SEMESTERS.indexOf(b.sem)
+      || CATEGORIES.indexOf(a.cat) - CATEGORIES.indexOf(b.cat));
+  const status = gradeValidationStatus(2);
+  const grouped = Object.fromEntries(groups.map((group) => [group, choices.filter((subject) => subject.group === group)]));
+  const koreanMathEnglishCount = choices.filter((subject) => KOREAN_MATH_ENGLISH_CATEGORIES.has(subject.cat)).length;
+  return {
+    title: "웅천고 2학년 과목선택 결과",
+    studentName: getInputValue("studentName").trim() || "학생",
+    department: getInputValue("deptInput").trim() || state.resultData?.dept || "미입력",
+    track: getInputValue("trackSelect").trim() || state.resultData?.track || "미입력",
+    groups,
+    grouped,
+    choices,
+    status,
+    koreanMathEnglishCount,
+    createdAt: new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })
+  };
+}
+
+function renderSecondYearShareCard(data) {
+  const card = document.getElementById("secondYearShareCard");
+  const groupHtml = data.groups.map((group) => {
+    const subjects = data.grouped[group];
+    const subjectHtml = subjects.length
+      ? subjects.map((subject) => `<div class="share-card-subject">${esc(subject.name)}<small>${esc(subject.sem)} · ${esc(subject.cat)} · ${Number(subject.credit) || 0}학점</small></div>`).join("")
+      : '<div class="share-card-empty">선택한 과목이 없습니다.</div>';
+    return `<section class="share-card-group">
+      <div class="share-card-group-head"><span>선택군 ${group}</span><span>${subjects.length}/${GROUP_MAX_LIMITS[group]}개</span></div>
+      <div class="share-card-subjects">${subjectHtml}</div>
+    </section>`;
+  }).join("");
+  card.innerHTML = `<div class="share-card-sheet">
+    <header class="share-card-head">
+      <p class="share-card-kicker">공유용 요약 · 2학년 선택과목만 표시</p>
+      <h2>${esc(data.title)}</h2>
+    </header>
+    <section class="share-card-profile">
+      <div class="share-card-field"><b>학생 이름</b><span>${esc(data.studentName)}</span></div>
+      <div class="share-card-field"><b>희망 학과명</b><span>${esc(data.department)}</span></div>
+      <div class="share-card-field"><b>진로 계열</b><span>${esc(data.track)}</span></div>
+      <div class="share-card-field"><b>2학년 선택 완료 여부</b><span>${data.status.complete ? "선택 완료 ✓" : "선택 확인 필요"}</span></div>
+    </section>
+    <section class="share-card-metrics">
+      <div class="share-card-metric"><b>선택군 A·B·C</b><strong>${data.status.selectedCount}/${data.status.requiredCount}</strong></div>
+      <div class="share-card-metric"><b>국어·수학·영어</b><strong>${data.koreanMathEnglishCount}개</strong></div>
+      <div class="share-card-metric"><b>선택 과목 총 개수</b><strong>${data.choices.length}개</strong></div>
+    </section>
+    <section class="share-card-groups">${groupHtml}</section>
+    <footer class="share-card-foot"><span>웅천고등학교 과목 선택 도우미</span><span>${esc(data.createdAt)} 생성</span></footer>
+  </div>`;
+  return card;
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("PNG 이미지 변환에 실패했습니다.")), "image/png");
+  });
+}
+
+async function generateSecondYearShareImage(data = buildSecondYearShareData()) {
+  if (typeof window.html2canvas !== "function") throw new Error("이미지 생성 도구를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.");
+  const card = renderSecondYearShareCard(data);
+  if (document.fonts?.ready) await document.fonts.ready;
+  const canvas = await window.html2canvas(card, {
+    backgroundColor: "#f5f8fd",
+    scale: Math.min(Math.max(window.devicePixelRatio || 1, 2), 3),
+    useCORS: true,
+    logging: false
+  });
+  const blob = await canvasToBlob(canvas);
+  const safeName = data.studentName.replace(/[\\/:*?"<>|]/g, "_");
+  const fileName = `웅천고_2학년_과목선택_${safeName}.png`;
+  const file = typeof File === "function" ? new File([blob], fileName, { type: "image/png" }) : null;
+  return { blob, file, fileName };
+}
+
+function downloadShareImage(blob, fileName = "웅천고_2학년_과목선택_공유용.png") {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function hasKakaoAppKey() {
+  return Boolean(KAKAO_APP_KEY && KAKAO_APP_KEY !== "YOUR_JAVASCRIPT_KEY_HERE");
+}
+
+function sendKakaoTextSummary(data) {
+  if (!hasKakaoAppKey() || !window.Kakao || !/^https?:$/.test(location.protocol)) return false;
+  if (!window.Kakao.isInitialized()) window.Kakao.init(KAKAO_APP_KEY);
+  const groupText = data.groups.map((group) => `선택군 ${group}: ${data.grouped[group].map((subject) => subject.name).join(", ") || "선택 없음"}`).join("\n");
+  window.Kakao.Share.sendDefault({
+    objectType: "text",
+    text: `${data.title}\n${data.studentName} · ${data.status.complete ? "선택 완료" : "선택 확인 필요"}\n${groupText}\n\n다운로드된 요약 이미지를 함께 공유해 주세요.`,
+    link: { mobileWebUrl: location.href, webUrl: location.href }
+  });
+  return true;
+}
+
+async function shareSecondYearToKakao() {
+  const button = document.getElementById("kakaoShareBtn");
+  const data = buildSecondYearShareData();
+  if (!data.choices.length) {
+    alert("2학년 선택과목을 하나 이상 선택한 뒤 공유해 주세요.");
+    return;
+  }
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = "공유 이미지 만드는 중…";
+  try {
+    const generated = await generateSecondYearShareImage(data);
+    let canShareFile = false;
+    if (generated.file && typeof navigator.share === "function" && typeof navigator.canShare === "function") {
+      try {
+        canShareFile = navigator.canShare({ files: [generated.file] });
+      } catch (error) {
+        console.warn("이 브라우저는 이미지 파일 공유 여부를 확인할 수 없습니다.", error);
+      }
+    }
+    if (canShareFile) {
+      try {
+        await navigator.share({
+          files: [generated.file],
+          title: data.title,
+          text: `${data.studentName} 학생의 2학년 과목선택 결과입니다.`
+        });
+        showToast("2학년 선택 결과 공유를 완료했습니다.");
+      } catch (shareError) {
+        if (shareError?.name === "AbortError") {
+          showToast("공유를 취소했습니다.");
+          return;
+        }
+        console.warn("브라우저 공유창을 열지 못해 이미지 다운로드로 전환합니다.", shareError);
+        downloadShareImage(generated.blob, generated.fileName);
+        alert("이 브라우저에서는 이미지 공유창을 바로 열 수 없어 PNG 이미지를 다운로드했습니다.\n카카오톡에서 이미지를 선택해 공유해 주세요.");
+      }
+      return;
+    }
+
+    downloadShareImage(generated.blob, generated.fileName);
+    if (!hasKakaoAppKey()) {
+      alert("카카오 JavaScript 키가 설정되지 않았거나 이 브라우저가 이미지 파일 공유를 지원하지 않습니다.\n\n공유용 PNG 이미지를 다운로드했습니다. 카카오톡에서 이미지를 선택해 공유해 주세요.");
+      return;
+    }
+    try {
+      if (sendKakaoTextSummary(data)) {
+        showToast("PNG 이미지를 저장하고 카카오톡 텍스트 공유창을 열었습니다. 저장된 이미지를 함께 보내 주세요.");
+      } else {
+        alert("현재 실행 환경에서는 카카오톡 SDK 공유를 열 수 없습니다.\n\n다운로드한 PNG 이미지를 카카오톡에서 선택해 공유해 주세요.");
+      }
+    } catch (kakaoError) {
+      console.warn("카카오톡 보조 공유를 열지 못했습니다.", kakaoError);
+      alert("카카오톡 공유창을 열지 못해 PNG 이미지만 다운로드했습니다.\n카카오톡에서 이미지를 선택해 공유해 주세요.");
+    }
+  } catch (error) {
+    if (error?.name === "AbortError") {
+      showToast("공유를 취소했습니다.");
+    } else {
+      console.error("2학년 선택 결과 공유 중 오류가 발생했습니다.", error);
+      alert(`공유용 이미지를 만들지 못했습니다.\n${error?.message || "잠시 후 다시 시도해 주세요."}`);
+    }
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+// 카카오 공유 기능 끝
+
 function duplicateErrorsForGroups(groups, map = state.selected) {
   const groupSet = new Set(groups);
   const errors = [];
@@ -2558,6 +2773,7 @@ function init() {
   document.getElementById("studentName").addEventListener("input", () => { renderSelectedSummary(); persistDraft(); });
   document.getElementById("resetBtn").addEventListener("click", resetSelections);
   document.getElementById("printBtn").addEventListener("click", () => window.print());
+  document.getElementById("kakaoShareBtn").addEventListener("click", shareSecondYearToKakao);
   document.getElementById("descClose").addEventListener("click", closeDescription);
   document.getElementById("descModal").addEventListener("click", (event) => {
     if (event.target.id === "descModal") closeDescription();
