@@ -1,0 +1,2572 @@
+<!DOCTYPE html>
+<!--
+  수정 이력
+  - 2026-06-24: 2026학년도 입학생 3개년 편성표 기준 과목·학기·학점·선택군 재검증
+  - 2026-06-24: 선택군 B/J 학기별 택1·동일 과목 중복 금지, H/I 독립 선택, 국수영 선택 최대 5개 검증
+  - 2026-06-24: 경남교육청 「2026 선택 과목 뭐하지?」 교과목 안내를 바탕으로 설명 모달 보강
+  - 2026-06-24: 오프라인 단일 HTML, 모바일 카드 UI, 인쇄용 결과 화면 및 공개 링크 개선
+-->
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light" />
+<title>웅천고 과목 선택 도우미</title>
+<style>
+:root{
+  --primary:#123f91;--primary-2:#0b66c3;--bg:#eef3fb;--ink:#111827;--muted:#64748b;
+  --line:#1f2937;--thin:#8a96a8;--card:#ffffff;--head:#dfe9f9;--side:#dce6f7;
+  --choice:#fff2a8;--choice-strong:#ffe87a;--danger:#b91c1c;--danger-bg:#fff1f2;
+  --good:#047857;--good-bg:#ecfdf5;--core:#dc2626;--rec:#2563eb;--edu:#059669;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);font-family:"Malgun Gothic","Apple SD Gothic Neo",Arial,sans-serif;color:var(--ink);line-height:1.45}
+button,input,select{font:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(37,99,235,.35);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 14px 56px}
+.hero{position:relative;background:#fff;border:2px solid var(--line);border-radius:6px;padding:18px 22px;margin-bottom:12px;box-shadow:0 8px 24px rgba(15,23,42,.08)}
+.hero::before{content:"◆";font-size:30px;line-height:1;color:#000;margin-right:10px;vertical-align:middle}
+.hero h1{display:inline;margin:0;font-size:clamp(25px,3.5vw,38px);font-weight:900;letter-spacing:-.045em;vertical-align:middle}
+.hero p{margin:8px 0 0 42px;color:#334155;font-weight:700}.hero .hero-note{font-size:13px;color:#334155;max-width:1050px}
+.panel{background:var(--card);border:1.8px solid var(--line);border-radius:6px;padding:15px;box-shadow:0 8px 24px rgba(15,23,42,.06);margin:12px 0}
+.row{display:grid;grid-template-columns:1fr 1.35fr 1fr auto;gap:8px;align-items:end}
+.field label{display:block;font-size:12px;font-weight:900;color:#334155;margin:0 0 5px}
+.field input,.field select{width:100%;height:42px;border:1.5px solid #475569;border-radius:4px;padding:0 10px;background:#fff;font-size:14px}
+.btn{border:1.5px solid #0f172a;border-radius:4px;background:var(--primary);color:#fff;font-weight:900;padding:10px 14px;cursor:pointer;box-shadow:none}
+.btn:hover{filter:brightness(.96)}
+.btn.secondary{background:#334155}.btn.ghost{background:#fff;color:#0f172a;border:1.5px solid #475569;box-shadow:none}
+.small{font-size:12px;color:var(--muted)}
+.legend,.recommend-hint{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #475569;background:#fff;padding:4px 8px;font-size:12px;font-weight:900}.pill .dot{width:10px;height:10px;border:1px solid #334155;display:inline-block}
+.grid-controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{border:1.4px solid #475569;background:#fff;color:#111827;border-radius:4px;padding:7px 11px;font-weight:900;cursor:pointer}.tab.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.curriculum-layout{display:flex;flex-direction:column;gap:18px}.section-title{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:0 0 8px}.section-title h3{margin:0;font-size:20px}.section-title p{margin:3px 0 0}
+.leaflet-section{background:#fff;border:0;margin:10px 0 18px;break-inside:avoid}.education-summary-panel{margin-top:18px;border:1.5px solid #cbd5e1;border-radius:12px;background:#f8fafc;padding:13px}.leaflet-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin:0 0 8px}.leaflet-section-head .leaflet-title{margin:0}.leaflet-section-title-text{min-width:0}.leaflet-title-note{display:inline-flex;align-items:center;margin-left:12px;border:1.4px solid #2563eb;border-radius:999px;background:#eff6ff;color:#1e40af;padding:4px 10px;font-size:13px;font-weight:900;letter-spacing:-.04em;vertical-align:middle}.leaflet-section-action{display:flex;align-items:center;gap:8px}.third-year-toggle-card{border:2px dashed #94a3b8;padding:12px;background:#f8fbff}.third-year-collapsed{margin-top:10px;border:1.2px solid #cbd5e1;background:#fff;padding:10px 12px;color:#475569;font-weight:800}
+.leaflet-title{display:flex;align-items:center;gap:8px;margin:0 0 8px;font-size:25px;font-weight:900;letter-spacing:-.04em}.leaflet-title::before{content:"◆";font-size:24px;color:#000}.leaflet-subtitle{margin:-2px 0 8px 31px;color:#475569;font-size:13px;font-weight:700}.leaflet-table-wrap{overflow-x:auto;border:2.2px solid #111827;background:#fff}.leaflet-table{width:100%;min-width:820px;border-collapse:collapse;table-layout:fixed;background:#fff}.leaflet-table col.c-side{width:78px}.leaflet-table col.c-cat{width:76px}.leaflet-table col.c-subject{width:300px}.leaflet-table col.c-eval{width:92px}.leaflet-table col.c-sem{width:122px}.leaflet-table col.c-rule{width:64px}
+.leaflet-table th,.leaflet-table td{border:1.2px solid #1f2937;padding:5px 5px;text-align:center;vertical-align:middle;word-break:keep-all}.leaflet-table thead th{background:var(--head);font-weight:900;font-size:14px;letter-spacing:-.04em}.leaf-group-cell{background:var(--side);font-size:16px;font-weight:900;line-height:1.28;letter-spacing:-.06em}.leaf-group-cell .credit{display:block;color:#0046c7;margin-top:4px;font-size:15px}.leaf-cat{font-weight:800;background:#fff;font-size:13px}.leaf-subject{text-align:left!important;font-weight:800;position:relative}.leaf-subject.kme{background:var(--choice)}.leaf-subject.rec-cell{border-left-width:6px!important;box-shadow:inset 0 0 0 9999px rgba(255,255,255,.02)}.leaf-subject.rec-cell-core{background:#fff1f2!important;border-left-color:var(--core)!important}.leaf-subject.rec-cell-rec{background:#eff6ff!important;border-left-color:var(--rec)!important}.leaf-subject.rec-cell-edu{background:#ecfdf5!important;border-left-color:var(--edu)!important}.leaf-subject.rec-cell-core.kme{background:linear-gradient(90deg,#ffe4e6 0%,#fef3c7 58%,#fff7ed 100%)!important}.leaf-subject.rec-cell-rec.kme{background:linear-gradient(90deg,#dbeafe 0%,#fef3c7 58%,#fff7ed 100%)!important}.leaf-subject.rec-cell-edu.kme{background:linear-gradient(90deg,#dcfce7 0%,#fef3c7 58%,#fff7ed 100%)!important}.rec-label{display:inline-flex;align-items:center;justify-content:center;border:2px solid currentColor;border-radius:5px;padding:2px 7px;margin-right:7px;font-size:11px;font-weight:900;line-height:1.25;letter-spacing:-.04em;vertical-align:middle;background:#fff}.rec-label.core{color:#991b1b;background:#fee2e2}.rec-label.rec{color:#1e40af;background:#dbeafe}.rec-label.edu{color:#166534;background:#dcfce7}.leaf-eval{font-weight:800;font-size:13px;letter-spacing:-.06em}.leaf-eval.eval-absolute,.leaf-eval.eval-pass,.leaf-eval.eval-3{color:#0046c7;font-weight:900}.leaf-rule{font-size:15px;font-weight:900;line-height:1.22;background:#fff;letter-spacing:-.06em}.leaf-sem-cell{height:36px}.leaf-fixed-name{font-weight:800}.dash{font-weight:900;color:#111}.leaf-check{display:inline-flex;align-items:center;justify-content:center;width:56px;height:28px;border:1.7px solid #111827;border-radius:7px;background:#fff;cursor:pointer;font-weight:900;font-size:18px;line-height:1;color:#0f172a}.leaf-check:hover{background:#eef6ff}.leaf-check.selected{background:#dbeafe;border-width:2.4px;color:#003ea1}.leaf-check.selected::before{content:"✓"}.leaf-check.rec-core{border-color:var(--core);background:#fff1f2;box-shadow:0 0 0 3px rgba(220,38,38,.18)}.leaf-check.rec-rec{border-color:var(--rec);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.16)}.leaf-check.rec-edu{border-color:var(--edu);background:#ecfdf5;box-shadow:0 0 0 3px rgba(5,150,105,.16)}.leaf-check.selected.rec-core{background:#fecdd3;color:#7f1d1d}.leaf-check.selected.rec-rec{background:#bfdbfe;color:#1e3a8a}.leaf-check.selected.rec-edu{background:#bbf7d0;color:#14532d}.leaf-info{border:1px solid #64748b;background:#fff;border-radius:4px;color:#334155;font-size:11px;font-weight:900;margin-left:6px;padding:2px 5px;min-width:0;width:auto;height:auto;line-height:1.35;cursor:pointer;white-space:nowrap;vertical-align:middle}.leaf-info:hover{border-color:var(--primary);color:var(--primary);background:#eff6ff}.leaf-footnote{display:flex;align-items:center;gap:8px;margin:10px 0 0 22px;font-weight:900;font-size:15px}.leaf-footnote .sample{width:36px;height:20px;background:var(--choice);border:1px solid #111}.leaf-footnote strong{color:#dc2626;font-size:18px}.first-year-note .leaflet-table{min-width:720px}.first-year-note .leaflet-table col.c-side{width:92px}.first-year-note .leaflet-table col.c-subject{width:310px}.first-year-toggle-card{border:2px dashed #94a3b8;padding:12px;background:#f8fbff}.first-year-toggle-card.collapsed{background:#f8fbff}.leaflet-toggle-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.leaflet-toggle-head .leaflet-title{margin:0}.leaflet-toggle-head .leaflet-subtitle{margin:4px 0 0 31px}.toggle-btn{white-space:nowrap;border:1.5px solid #0f172a;border-radius:4px;background:#fff;color:#123f91;font-weight:900;padding:8px 12px;cursor:pointer}.toggle-btn:hover{background:#eaf2ff}.first-year-body{margin-top:10px}.first-year-collapsed{margin-top:10px;border:1.2px solid #cbd5e1;background:#fff;padding:10px 12px;color:#475569;font-weight:800}
+.badge{display:inline-flex;align-items:center;font-size:10.5px;font-weight:900;border-radius:999px;padding:3px 7px;background:#e2e8f0;color:#334155}.rec-badge{font-size:12px;padding:4px 9px;border:2px solid currentColor;letter-spacing:-.02em;box-shadow:none}.tag-core{background:#fee2e2;color:#991b1b}.tag-rec{background:#dbeafe;color:#1e40af}.tag-edu{background:#dcfce7;color:#166534}
+.summary{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.summary-card{border:1.6px solid #1f2937;border-radius:4px;padding:10px;background:#f8fbff}.summary-card b{display:block;font-size:12px;color:#334155}.summary-card strong{font-size:22px;color:#0f172a}.validation-overview{border-radius:5px;padding:12px;margin:10px 0}.validation-overview.error{background:var(--danger-bg);border:1.5px solid #e11d48;color:#991b1b}.validation-overview.good{background:var(--good-bg);border:1.5px solid #059669;color:#065f46}.validation-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-top:9px}.validation-item{border:1px solid currentColor;border-radius:4px;padding:6px;background:rgba(255,255,255,.72);font-size:11px;font-weight:900;text-align:center}.validation-item.good{color:#047857}.validation-item.bad{color:#b91c1c}.errors{background:var(--danger-bg);border:1.5px solid #e11d48;color:#991b1b;border-radius:5px;padding:11px;margin:10px 0}.ok{background:var(--good-bg);border:1.5px solid #059669;color:#065f46;border-radius:5px;padding:11px;margin:10px 0}.result-head{display:grid;grid-template-columns:1.05fr 1.2fr;gap:12px}.rec-lists{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rec-box{border-radius:4px;border:1.4px solid #475569;padding:10px;background:#fff}.rec-box h4{margin:0 0 7px}.rec-box ul{margin:0;padding-left:18px}.rec-box .unavailable{color:#94a3b8;text-decoration:line-through}.rec-box .available::after{content:" 선택가능";font-size:10px;color:#047857;font-weight:900;margin-left:4px}.rec-box .fixed-rec::after{content:" 지정/필수";font-size:10px;color:#2563eb;font-weight:900;margin-left:4px}.selected-list{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.sem-list{border:1.4px solid #475569;border-radius:4px;padding:10px;background:#fff;break-inside:avoid}.sem-list h4{margin:0 0 7px;color:var(--primary)}.sem-list ul{padding-left:18px;margin:0}.total-line{margin:0 0 11px;padding:9px 11px;border-radius:4px;background:#e0ebff;color:#123f91;font-weight:900;border:1.3px solid #123f91}.footer-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 16px;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.25);z-index:60;display:none;max-width:min(680px,90vw)}.toast.show{display:block}.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,23,42,.62);z-index:50;padding:20px;align-items:center;justify-content:center}.modal-backdrop.show{display:flex}.desc-box{width:min(720px,100%);max-height:min(86vh,820px);overflow:auto;background:#fff;border-radius:8px;border:2px solid #111827;box-shadow:0 26px 70px rgba(15,23,42,.35)}.desc-head{position:sticky;top:0;display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#e5eefb;padding:16px 18px 11px;border-bottom:2px solid #111827;z-index:1}.desc-head h3{margin:0;font-size:23px}.desc-body{padding:16px 18px 20px}.desc-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.desc-section{border-left:5px solid #93c5fd;padding:0 0 0 12px;margin:16px 0}.desc-section h4{margin:0 0 5px;color:#123f91}.desc-section p{margin:0;white-space:pre-line}.desc-source{font-size:12px;color:#64748b;border-top:1px solid #cbd5e1;padding-top:12px;margin-top:16px}.hide{display:none!important}
+
+.validation-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.validation-overview.neutral{background:#f8fafc;border:1.5px solid #94a3b8;color:#334155}
+.validation-overview.compact{margin-top:8px}
+.validation-title-line{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.validation-title-line b{font-size:15px}
+.validation-count-pill{display:inline-flex;align-items:center;border:1px solid currentColor;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:900;background:rgba(255,255,255,.72)}
+.validation-detail{color:inherit;margin-top:6px;font-size:12px}
+@media(max-width:780px){.validation-split{grid-template-columns:1fr}}
+@media(max-width:930px){.row{grid-template-columns:1fr 1fr}.row .btn{height:42px}.result-head{grid-template-columns:1fr}.summary{grid-template-columns:repeat(3,1fr)}.validation-grid{grid-template-columns:repeat(4,1fr)}.rec-lists{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.leaflet-section-head,.leaflet-toggle-head{align-items:flex-start;flex-direction:column}.leaflet-title-note{margin-left:0;margin-top:6px}.leaflet-section-action,.leaflet-section-action .toggle-btn{width:100%}.toggle-btn{width:100%}.leaflet-toggle-head .leaflet-subtitle{margin-left:0}.wrap{padding:10px 7px 38px}.hero{padding:16px 13px}.hero p{margin-left:0}.panel{padding:11px}.row,.summary,.rec-lists,.selected-list{grid-template-columns:1fr}.validation-grid{grid-template-columns:repeat(3,1fr)}.footer-actions{width:100%;justify-content:stretch}.footer-actions .btn{flex:1}.leaflet-title{font-size:21px}.leaflet-subtitle{margin-left:0}.leaflet-table{min-width:800px}.modal-backdrop{padding:8px}.desc-box{max-height:94vh}}
+@media print{@page{margin:9mm}.first-year-toggle-card.collapsed,.third-year-toggle-card.collapsed{display:none!important}.toggle-btn{display:none!important}body{background:#fff;font-size:10.5px}.no-print,.toast,.modal-backdrop,.tabs,.legend{display:none!important}.wrap{max-width:none;padding:0}.hero{box-shadow:none;border-radius:0;padding:10px;margin:0 0 7px}.hero h1{font-size:22px}.hero p{font-size:11px;margin-left:32px}.panel{box-shadow:none;margin:6px 0;padding:8px;border:1px solid #111}.summary{grid-template-columns:repeat(5,1fr)}.summary-card{padding:6px}.summary-card strong{font-size:16px}.leaflet-section{break-inside:avoid;page-break-inside:avoid}.leaflet-title{font-size:20px;margin-bottom:5px}.leaflet-subtitle{font-size:10px;margin-bottom:5px}.leaflet-table-wrap{overflow:visible;border-width:1.5px}.leaflet-table{min-width:0;font-size:9.5px}.leaflet-table th,.leaflet-table td{padding:3px 4px;border-width:.8px}.leaflet-table col.c-side{width:11%}.leaflet-table col.c-cat{width:10%}.leaflet-table col.c-subject{width:27%}.leaflet-table col.c-eval{width:13%}.leaflet-table col.c-sem{width:13%}.leaflet-table col.c-rule{width:9%}.leaf-group-cell{font-size:14px}.leaf-group-cell .credit{font-size:13px}.leaf-rule{font-size:13px}.leaf-check{width:42px;height:20px;border-radius:5px}.leaf-info{display:none}.leaf-footnote{font-size:11px;margin-top:5px}.leaf-footnote strong{font-size:13px}.selected-list{grid-template-columns:repeat(3,1fr)}.sem-list{padding:6px}.resultPanel{display:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>웅천고 과목 선택 도우미</h1>
+    <p>2026학년도 입학생 3개년 교육과정 편성표와 우리 학교 과목선택 리플렛 디자인을 바탕으로 선택 조건을 확인합니다.</p>
+    <p class="hero-note">B·J는 학기별 1개씩 선택하며 같은 과목을 두 학기에 중복 선택할 수 없습니다. H와 I는 서로 연계하지 않고 각각 독립적으로 1개를 선택합니다. 선택군의 국어·수학·영어 과목은 전체 합산 최대 5개입니다.</p>
+  </header>
+
+  <section class="panel no-print" aria-labelledby="careerSearchTitle">
+    <div class="grid-controls">
+      <div>
+        <h2 id="careerSearchTitle" style="margin:0">진로 추천 찾기</h2>
+        <div class="small">학과명을 입력하거나 계열을 선택하면 과목 표에 핵심·권장·관련 표시와 색상이 적용됩니다.</div>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <div class="field"><label for="studentName">학생 이름</label><input id="studentName" autocomplete="name" placeholder="예: 홍길동" /></div>
+      <div class="field"><label for="deptInput">희망 학과명</label><input id="deptInput" list="deptSuggestions" placeholder="예: 컴퓨터공학과, 간호학과, 수학교육과" /><datalist id="deptSuggestions"></datalist></div>
+      <div class="field"><label for="trackSelect">진로 계열</label><select id="trackSelect"><option value="">계열 선택</option></select></div>
+      <button class="btn" id="searchBtn" type="button">추천 표시</button>
+    </div>
+    <div id="searchAlert" class="errors hide" role="alert"></div>
+  </section>
+
+  <section class="panel no-print" id="resultPanel" style="display:none" aria-live="polite"></section>
+
+  <main class="panel">
+    <div class="curriculum-layout" id="curriculumTable"></div>
+    <div class="education-summary-panel no-print" id="educationSummaryPanel">
+      <div class="grid-controls">
+        <div>
+          <h2 style="margin:0">교육과정 선택표</h2>
+          <div class="small">리플렛 표의 선택칸을 눌러 선택하거나 해제하세요. 모두 듣는 과목은 자동 반영됩니다.</div>
+        </div>
+        <div class="tabs" id="semesterTabs" aria-label="학기 필터"></div>
+      </div>
+      <div class="summary" id="summaryCards" style="margin:12px 0"></div>
+      <div id="validationBox" aria-live="polite"></div>
+    </div>
+  </main>
+
+  <section class="panel" id="roadmapPanel">
+    <div class="grid-controls">
+      <div>
+        <h2 style="margin:0">선택 결과 요약</h2>
+        <div class="small">선택 결과 중심으로 인쇄하거나 브라우저의 PDF 저장 기능을 이용할 수 있습니다.</div>
+      </div>
+      <div class="footer-actions no-print">
+        <button class="btn ghost" id="resetBtn" type="button">선택 초기화</button>
+        <button class="btn secondary" id="printBtn" type="button">인쇄 / PDF 저장</button>
+      </div>
+    </div>
+    <div id="selectedSummary" style="margin-top:12px"></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop no-print" id="descModal" role="dialog" aria-modal="true" aria-labelledby="descTitle">
+  <article class="desc-box" id="descBox">
+    <div class="desc-head">
+      <div>
+        <h3 id="descTitle"></h3>
+        <div class="desc-meta" id="descMeta"></div>
+      </div>
+      <button class="btn ghost" id="descClose" type="button" aria-label="과목 설명 닫기">닫기</button>
+    </div>
+    <div class="desc-body">
+      <div class="desc-section"><h4>과목 한줄 설명</h4><p id="descOneLine"></p></div>
+      <div class="desc-section"><h4>주요 학습 내용</h4><p id="descLearning"></p></div>
+      <div class="desc-section"><h4>이런 학생에게 추천</h4><p id="descRecommend"></p></div>
+      <div class="desc-section"><h4>관련 진로·학과</h4><p id="descCareer"></p></div>
+      <div class="desc-source" id="descSource"></div>
+    </div>
+  </article>
+</div>
+<script>
+        const CATEGORIES = ["국어", "수학", "영어", "사회", "과학", "체육", "예술", "정보", "제2외국어/한문", "교양"];
+        const SEMESTERS = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2"];
+
+        // 선택군별 필수 선택 개수(2026학년도 입학생 편성표 기준)
+        const GROUP_MAX_LIMITS = {"A": 4, "B": 2, "C": 4, "D": 1, "E": 1, "F": 4, "G": 2, "H": 1, "I": 1, "J": 2, "K": 1};
+        const DUPLICATE_RESTRICTED_GROUPS = ["B", "J"];
+        const GROUP_SEMESTER_REQUIREMENTS = {
+            "B": { "2-1": 1, "2-2": 1 },
+            "J": { "3-1": 1, "3-2": 1 }
+        };
+        const KOREAN_MATH_ENGLISH_MAX = 5;
+        const KOREAN_MATH_ENGLISH_CATEGORIES = new Set(["국어", "수학", "영어"]);
+
+        const GROUP_INFO = [
+            {
+                        "code": "A",
+                        "label": "2-1학기 선택군A [택4]",
+                        "color": "#dbeafe",
+                        "border": "#93c5fd"
+            },
+            {
+                        "code": "B",
+                        "label": "2학년 선택군B [학기별 택1·중복불가]",
+                        "color": "#ede9fe",
+                        "border": "#c4b5fd"
+            },
+            {
+                        "code": "C",
+                        "label": "2-2학기 선택군C [택4]",
+                        "color": "#dcfce7",
+                        "border": "#86efac"
+            },
+            {
+                        "code": "D",
+                        "label": "3-1학기 예술 선택군D [택1]",
+                        "color": "#ffedd5",
+                        "border": "#fdba74"
+            },
+            {
+                        "code": "E",
+                        "label": "3-2학기 예술 선택군E [택1]",
+                        "color": "#fef9c3",
+                        "border": "#fde047"
+            },
+            {
+                        "code": "F",
+                        "label": "3-1학기 선택군F [택4]",
+                        "color": "#ffe4e6",
+                        "border": "#fecdd3"
+            },
+            {
+                        "code": "G",
+                        "label": "3-2학기 선택군G [택2]",
+                        "color": "#ccfbf1",
+                        "border": "#5eead4"
+            },
+            {
+                        "code": "H",
+                        "label": "3-1학기 선택군H [택1]",
+                        "color": "#e0f2fe",
+                        "border": "#7dd3fc"
+            },
+            {
+                        "code": "I",
+                        "label": "3-2학기 선택군I [택1]",
+                        "color": "#fdf4ff",
+                        "border": "#f5d0fe"
+            },
+            {
+                        "code": "J",
+                        "label": "3학년 선택군J [학기별 택1·중복불가]",
+                        "color": "#f3e8ff",
+                        "border": "#d8b4fe"
+            },
+            {
+                        "code": "K",
+                        "label": "3-2학기 선택군K [택1]",
+                        "color": "#f1f5f9",
+                        "border": "#cbd5e1"
+            }
+];
+
+        const CURRICULUM = {
+            "1-1": {
+                        "국어": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통국어1",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통수학1",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통영어1",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "공통",
+                                                "name": "한국사1",
+                                                "credit": 3,
+                                                "group": "공통"
+                                    },
+                                    {
+                                                "type": "공통",
+                                                "name": "통합사회1",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "공통",
+                                                "name": "통합과학1",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    },
+                                    {
+                                                "type": "공통",
+                                                "name": "과학탐구실험1",
+                                                "credit": 1,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "일반",
+                                                "name": "체육1",
+                                                "credit": 2,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "예술": [
+                                    {
+                                                "type": "일반",
+                                                "name": "음악↔미술",
+                                                "credit": 3,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "정보": [],
+                        "제2외국어/한문": [],
+                        "교양": []
+            },
+            "1-2": {
+                        "국어": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통국어2",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통수학2",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "공통",
+                                                "name": "공통영어2",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "공통",
+                                                "name": "한국사2",
+                                                "credit": 3,
+                                                "group": "공통"
+                                    },
+                                    {
+                                                "type": "공통",
+                                                "name": "통합사회2",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "공통",
+                                                "name": "통합과학2",
+                                                "credit": 4,
+                                                "group": "공통"
+                                    },
+                                    {
+                                                "type": "공통",
+                                                "name": "과학탐구실험2",
+                                                "credit": 1,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "일반",
+                                                "name": "체육2",
+                                                "credit": 2,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "예술": [
+                                    {
+                                                "type": "일반",
+                                                "name": "음악↔미술",
+                                                "credit": 3,
+                                                "group": "공통"
+                                    }
+                        ],
+                        "정보": [],
+                        "제2외국어/한문": [],
+                        "교양": []
+            },
+            "2-1": {
+                        "국어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "문학",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "주제 탐구 독서",
+                                                "credit": 3,
+                                                "group": "A"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "일반",
+                                                "name": "대수",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "확률과 통계",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "인공지능 수학",
+                                                "credit": 3,
+                                                "group": "A"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "영어 독해와 작문",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "미디어 영어",
+                                                "credit": 3,
+                                                "group": "A"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "일반",
+                                                "name": "현대사회와 윤리",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "세계시민과 지리",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "세계사",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "법과 사회",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "여행지리",
+                                                "credit": 3,
+                                                "group": "A"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "일반",
+                                                "name": "물리학",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "화학",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "생명과학",
+                                                "credit": 3,
+                                                "group": "A"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "지구시스템과학",
+                                                "credit": 3,
+                                                "group": "A"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "융합",
+                                                "name": "스포츠 생활1",
+                                                "credit": 2,
+                                                "group": "필수"
+                                    }
+                        ],
+                        "예술": [],
+                        "정보": [
+                                    {
+                                                "type": "일반",
+                                                "name": "정보",
+                                                "credit": 3,
+                                                "group": "B"
+                                    }
+                        ],
+                        "제2외국어/한문": [
+                                    {
+                                                "type": "일반",
+                                                "name": "일본어",
+                                                "credit": 3,
+                                                "group": "B"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "중국어",
+                                                "credit": 3,
+                                                "group": "B"
+                                    }
+                        ],
+                        "교양": []
+            },
+            "2-2": {
+                        "국어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "독서와 작문",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "문학과 영상",
+                                                "credit": 3,
+                                                "group": "C"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "일반",
+                                                "name": "미적분Ⅰ",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "기하",
+                                                "credit": 3,
+                                                "group": "C"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "영어Ⅰ",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "세계 문화와 영어",
+                                                "credit": 3,
+                                                "group": "C"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "일반",
+                                                "name": "사회와 문화",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "도시의 미래 탐구",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "동아시아 역사 기행",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "인문학과 윤리",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "정치",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "윤리문제 탐구",
+                                                "credit": 3,
+                                                "group": "C"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "진로",
+                                                "name": "역학과 에너지",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "물질과 에너지",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "세포와 물질대사",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "지구과학",
+                                                "credit": 3,
+                                                "group": "C"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "융합과학 탐구",
+                                                "credit": 3,
+                                                "group": "C"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "융합",
+                                                "name": "스포츠 생활2",
+                                                "credit": 2,
+                                                "group": "필수"
+                                    }
+                        ],
+                        "예술": [],
+                        "정보": [
+                                    {
+                                                "type": "일반",
+                                                "name": "정보",
+                                                "credit": 3,
+                                                "group": "B"
+                                    }
+                        ],
+                        "제2외국어/한문": [
+                                    {
+                                                "type": "일반",
+                                                "name": "일본어",
+                                                "credit": 3,
+                                                "group": "B"
+                                    },
+                                    {
+                                                "type": "일반",
+                                                "name": "중국어",
+                                                "credit": 3,
+                                                "group": "B"
+                                    }
+                        ],
+                        "교양": [
+                                    {
+                                                "type": "융합",
+                                                "name": "논술",
+                                                "credit": 2,
+                                                "group": "필수"
+                                    }
+                        ]
+            },
+            "3-1": {
+                        "국어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "화법과 언어",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "매체 의사소통",
+                                                "credit": 3,
+                                                "group": "F"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "융합",
+                                                "name": "경제 수학",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "미적분Ⅱ",
+                                                "credit": 3,
+                                                "group": "F"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "영어Ⅱ",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "영미 문학 읽기",
+                                                "credit": 3,
+                                                "group": "F"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "진로",
+                                                "name": "경제",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "한국지리 탐구",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "윤리와 사상",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "역사로 탐구하는 현대 세계",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "사회문제 탐구",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "세계 문제와 미래 사회",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "진로",
+                                                "name": "전자기와 양자",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "화학 반응의 세계",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "생물의 유전",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "행성우주과학",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "기후변화와 환경생태",
+                                                "credit": 3,
+                                                "group": "F"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "과학과제 연구",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "진로",
+                                                "name": "스포츠 문화",
+                                                "credit": 1,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "스포츠 경기 체력",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "예술": [
+                                    {
+                                                "type": "진로",
+                                                "name": "미술 감상과 비평",
+                                                "credit": 2,
+                                                "group": "D"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "음악 연주와 창작",
+                                                "credit": 2,
+                                                "group": "D"
+                                    }
+                        ],
+                        "정보": [
+                                    {
+                                                "type": "진로",
+                                                "name": "인공지능 기초",
+                                                "credit": 3,
+                                                "group": "H"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "데이터 과학",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "제2외국어/한문": [
+                                    {
+                                                "type": "융합",
+                                                "name": "일본 문화",
+                                                "credit": 3,
+                                                "group": "H"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "중국 문화",
+                                                "credit": 3,
+                                                "group": "H"
+                                    }
+                        ],
+                        "교양": []
+            },
+            "3-2": {
+                        "국어": [
+                                    {
+                                                "type": "일반",
+                                                "name": "독서 토론과 글쓰기",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "언어생활 탐구",
+                                                "credit": 3,
+                                                "group": "G"
+                                    }
+                        ],
+                        "수학": [
+                                    {
+                                                "type": "융합",
+                                                "name": "실용 통계",
+                                                "credit": 4,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "수학과제 탐구",
+                                                "credit": 3,
+                                                "group": "G"
+                                    }
+                        ],
+                        "영어": [
+                                    {
+                                                "type": "진로",
+                                                "name": "심화 영어 독해와 작문",
+                                                "credit": 3,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "실생활 영어 회화",
+                                                "credit": 3,
+                                                "group": "G"
+                                    }
+                        ],
+                        "사회": [
+                                    {
+                                                "type": "융합",
+                                                "name": "기후변화와 지속가능한 세계",
+                                                "credit": 3,
+                                                "group": "G"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "금융과 경제생활",
+                                                "credit": 3,
+                                                "group": "G"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "세계 문제와 미래 사회",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "과학": [
+                                    {
+                                                "type": "융합",
+                                                "name": "과학의 역사와 문화",
+                                                "credit": 3,
+                                                "group": "G"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "기후변화와 환경생태",
+                                                "credit": 3,
+                                                "group": "G"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "과학과제 연구",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "체육": [
+                                    {
+                                                "type": "진로",
+                                                "name": "스포츠 과학",
+                                                "credit": 1,
+                                                "group": "필수"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "스포츠 경기 체력",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "예술": [
+                                    {
+                                                "type": "진로",
+                                                "name": "미술 창작",
+                                                "credit": 2,
+                                                "group": "E"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "음악 감상과 비평",
+                                                "credit": 2,
+                                                "group": "E"
+                                    }
+                        ],
+                        "정보": [
+                                    {
+                                                "type": "융합",
+                                                "name": "소프트웨어와 생활",
+                                                "credit": 3,
+                                                "group": "I"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "데이터 과학",
+                                                "credit": 3,
+                                                "group": "J"
+                                    }
+                        ],
+                        "제2외국어/한문": [
+                                    {
+                                                "type": "진로",
+                                                "name": "일본어 회화",
+                                                "credit": 3,
+                                                "group": "I"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "중국어 회화",
+                                                "credit": 3,
+                                                "group": "I"
+                                    }
+                        ],
+                        "교양": [
+                                    {
+                                                "type": "진로",
+                                                "name": "교육의 이해",
+                                                "credit": 2,
+                                                "group": "K"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "보건",
+                                                "credit": 2,
+                                                "group": "K"
+                                    },
+                                    {
+                                                "type": "융합",
+                                                "name": "인간과 경제활동",
+                                                "credit": 2,
+                                                "group": "K"
+                                    },
+                                    {
+                                                "type": "진로",
+                                                "name": "인간과 심리",
+                                                "credit": 2,
+                                                "group": "K"
+                                    }
+                        ]
+            }
+};
+
+        const ABSOLUTE_EVAL_SUBJECTS = [
+            "역사로탐구하는현대세계", "사회문제탐구", "여행지리", "융합과학탐구",
+            "윤리문제탐구", "금융과경제생활", "기후변화와지속가능한세계",
+            "기후변화와환경생태", "과학의역사와문화"
+        ];
+
+        const SUBJECT_DETAIL_DATA = {
+            "화법과 언어": {
+                        "summary": "공통국어의 듣기·말하기와 문법 영역을 심화해 다양한 담화에 능동적으로 참여하고, 언어 자원의 표현 효과와 운용 원리를 탐구하는 과목입니다. 의사소통 능력과 비판적 사고력을 함께 기릅니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "독서와 작문": {
+                        "summary": "공통국어의 읽기와 쓰기 영역을 심화해 다양한 글과 자료를 이해하고 생산하는 과목입니다. 여러 분야의 지식을 습득하고 사회·문화적 맥락 속에서 깊이 있게 소통하는 능력을 기릅니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "문학": {
+                        "summary": "문학 작품을 수용하고 생산하는 능력을 기르며, 인간과 세계에 대한 이해를 넓히는 과목입니다. 문학의 가치 인식, 자기 성찰, 타인에 대한 공감 능력 함양에 중점을 둡니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "주제 탐구 독서": {
+                        "summary": "다양한 책과 자료를 읽고 분석하여 자신의 관점과 견해를 형성하는 과목입니다. 관심 주제를 깊이 탐구하며 학업과 진로에 필요한 탐구 역량을 기르는 데 중점을 둡니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "문학과 영상": {
+                        "summary": "문학 작품과 영상물의 수용·생산 능력을 함께 기르는 과목입니다. 문학과 영상의 형상화 방식과 상호작용을 탐구하여 교육, 창작, 문화산업 관련 진로 역량을 기릅니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "독서 토론과 글쓰기": {
+                        "summary": "책을 읽고 토론과 글쓰기를 수행하며 비판적·창의적 사고력과 협력적 의사소통 능력을 기르는 과목입니다. 서로 다른 관점을 존중하는 태도도 함께 다룹니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "매체 의사소통": {
+                        "summary": "디지털 매체가 개인과 사회에 미치는 영향을 탐구하고, 매체 환경에서 텍스트를 생산·수용하는 과정을 이해하는 과목입니다. 매체 자료 제작과 공유를 통해 실제 의사소통 문제를 해결합니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "언어생활 탐구": {
+                        "summary": "일상의 언어생활에서 주제를 발견하고 탐구하여 비판적·창의적 사고력을 기르는 과목입니다. 언어의 사회적 역할과 영향을 파악하고 바람직한 언어문화를 실천하는 능력을 기릅니다.",
+                        "source": "교과목 안내 50쪽"
+            },
+            "대수": {
+                        "summary": "규칙적으로 변화하는 수량과 현상을 함수로 표현하고 탐구하는 과목입니다. 지수·로그·삼각함수, 수열 등은 자연과학, 공학, 의학, 경제·경영 등 다양한 분야의 기초가 됩니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "미적분Ⅰ": {
+                        "summary": "극한과 무한의 개념, 순간적인 변화, 넓이와 이동 거리 등 미적분의 기초를 다루는 과목입니다. 여러 분야에 수학을 적용하는 기초를 다집니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "미적분 I": {
+                        "summary": "극한과 무한의 개념, 순간적인 변화, 넓이와 이동 거리 등 미적분의 기초를 다루는 과목입니다. 여러 분야에 수학을 적용하는 기초를 다집니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "확률과 통계": {
+                        "summary": "데이터 분석, 추정, 사건의 가능성 계산을 통해 합리적인 의사결정 능력을 기르는 과목입니다. 자연과학, 공학, 의학뿐 아니라 사회과학과 인문·예체능 분야의 기초가 됩니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "기하": {
+                        "summary": "평면과 공간의 기하적 대상을 다루며 이차곡선, 공간도형과 공간좌표, 벡터를 탐구하는 과목입니다. 기하와 대수를 연결하여 수학적 추론 능력을 기릅니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "미적분Ⅱ": {
+                        "summary": "미적분Ⅰ을 심화하여 수열의 극한, 급수, 여러 함수의 미분과 적분을 다룹니다. 복잡한 현상을 수학적으로 모델링하는 방법을 학습합니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "미적분 II": {
+                        "summary": "미적분Ⅰ을 심화하여 수열의 극한, 급수, 여러 함수의 미분과 적분을 다룹니다. 복잡한 현상을 수학적으로 모델링하는 방법을 학습합니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "경제 수학": {
+                        "summary": "수학의 개념과 원리를 경제 분야와 연결해 이해하고 활용하는 과목입니다. 함수와 행렬로 경제 현상을 분석하고, 미분을 활용해 최적의 의사결정을 탐구합니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "인공지능 수학": {
+                        "summary": "인공지능의 데이터 처리와 의사결정 과정을 통해 인공지능과 수학의 관련성을 탐구하는 과목입니다. 인공지능 알고리즘과 빅데이터 분석에 활용되는 수학, 공학 도구 활용을 다룹니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "실용 통계": {
+                        "summary": "통계적 문제 해결 과정을 이해하고 실제 자료를 수집·분석하여 합리적인 의사결정을 내리는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "수학과제 탐구": {
+                        "summary": "다양한 수학적 탐구 방법과 절차를 이해하고 자기주도적으로 탐구 활동을 수행하는 과목입니다. 수학 개념을 실생활·타 교과와 연결해 해석합니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "수학과 문화": {
+                        "summary": "수학과 문화 사이의 융합 현상을 탐구하여 수학의 역할과 유용성을 이해하는 과목입니다.",
+                        "source": "교과목 안내 51쪽"
+            },
+            "영어Ⅰ": {
+                        "summary": "듣기, 말하기, 읽기, 쓰기의 네 기능을 다루어 사회생활과 학업에 필요한 의사소통 능력을 기르는 과목입니다. 진로와 전공 분야 관련 영어 이해·표현 능력의 기본을 다집니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영어 I": {
+                        "summary": "듣기, 말하기, 읽기, 쓰기의 네 기능을 다루어 사회생활과 학업에 필요한 의사소통 능력을 기르는 과목입니다. 진로와 전공 분야 관련 영어 이해·표현 능력의 기본을 다집니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영어Ⅱ": {
+                        "summary": "공통영어와 일반 선택 영어 과목을 심화하여 사회생활과 학업에 필요한 의사소통 능력을 높이고, 진로·전공 분야와 관련된 영어 이해와 표현 능력을 연마하는 과목입니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영어 II": {
+                        "summary": "공통영어와 일반 선택 영어 과목을 심화하여 사회생활과 학업에 필요한 의사소통 능력을 높이고, 진로·전공 분야와 관련된 영어 이해와 표현 능력을 연마하는 과목입니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영어 독해와 작문": {
+                        "summary": "공통영어 또는 일반 선택 영어 과목을 바탕으로 일상 속 영어 능력과 학문·전공 분야에서 필요한 독해와 작문 능력을 향상하는 과목입니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영미 문학 읽기": {
+                        "summary": "영미 문학 작품을 감상하며 영어 능력을 확장하고 작품에 대한 생각과 느낌을 비판적·창의적으로 표현하는 과목입니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "영어 발표와 토론": {
+                        "summary": "영어 듣기·말하기 기능의 심화 과목입니다. 다양한 상황에서 적절한 의사소통 전략을 활용해 영어로 발표하고 토론하는 능력을 기릅니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "심화 영어": {
+                        "summary": "영어Ⅰ·영어Ⅱ와 연계된 심화 과목으로, 다양한 주제에 대한 영어 이해·표현 능력을 기릅니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "심화 영어 독해와 작문": {
+                        "summary": "영어 독해와 작문과 연계된 읽기·쓰기 심화 과목입니다. 다양한 글을 이해하며 비판적인 독해 능력을 기르고 의견을 창의적으로 표현하는 영어 문해력을 기릅니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "실생활 영어 회화": {
+                        "summary": "실생활 상황에서 친숙하고 일반적인 주제의 영어를 듣고 이해하며 자신의 생각과 감정을 표현하는 과목입니다. 영어 듣기·말하기 능력 향상에 중점을 둡니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "미디어 영어": {
+                        "summary": "다양한 미디어에서 접하는 영어 주제를 이해하고 창의적으로 활용하는 과목입니다. 미디어 정보를 분석·평가하며 창의적·비판적 사고 능력을 기릅니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "세계 문화와 영어": {
+                        "summary": "세계 영어와 문화 현상을 이해하고 자신의 문화적 관점을 창의적으로 표현하는 과목입니다. 서로 다른 사고와 문화를 존중하며 세계인과 소통하는 태도를 기릅니다.",
+                        "source": "교과목 안내 52쪽"
+            },
+            "세계시민과 지리": {
+                        "summary": "세계화와 지역화, 인간과 자연의 상호작용, 에너지와 환경 문제, 다양한 지역의 삶을 이해하는 과목입니다. 지속가능한 미래를 위해 행동하는 세계시민의 태도를 기릅니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "세계사": {
+                        "summary": "인류가 출현한 시기부터 오늘날까지 인류가 걸어온 발자취를 탐구하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "사회와 문화": {
+                        "summary": "개인이 사회 구조의 영향을 받는 동시에 사회를 변화시키는 주체임을 이해하는 과목입니다. 다양한 관점과 문화를 가진 타인과 상호작용하며 민주시민으로 참여하는 역량을 기릅니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "현대사회와 윤리": {
+                        "summary": "현대사회에서 일어나는 다양한 문제와 쟁점을 윤리적 관점에서 합리적으로 해결하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "한국지리 탐구": {
+                        "summary": "국토 환경과 지역의 지리적 이슈를 깊이 있게 이해하고, 주요 문제에 책임감 있게 대처할 수 있는 시민 역량을 기르는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "도시의 미래 탐구": {
+                        "summary": "도시에 대한 지리적 이해를 바탕으로 세계 여러 도시의 변화를 탐색하고, 도시 문제를 사회과학적·인문학적으로 성찰해 미래 도시를 구상하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "동아시아 역사 기행": {
+                        "summary": "동아시아의 생태환경과 인간 활동, 유·무형 문화유산을 학습하며 현재 동아시아 각 지역 간의 관계를 파악하고 진로 탐색과 연결하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "동아시아 역사기행": {
+                        "summary": "동아시아의 생태환경과 인간 활동, 유·무형 문화유산을 학습하며 현재 동아시아 각 지역 간의 관계를 파악하고 진로 탐색과 연결하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "정치": {
+                        "summary": "현대 민주주의 사회의 구성원에게 요구되는 시민 역량을 기르고, 일상생활의 정치 생활에 능동적으로 참여하는 민주시민의 자질을 함양하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "법과 사회": {
+                        "summary": "민주주의와 법치주의를 이해하고 능동적인 사회 구성원으로서 민주시민의 자질을 기르는 과목입니다. 법 관련 분야의 진로 탐색에도 도움이 됩니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "경제": {
+                        "summary": "경제생활에서 요구되는 경제적 사고력과 경제 문제 해결력을 기르기 위해 개설된 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "윤리와 사상": {
+                        "summary": "삶에서 마주하는 윤리적 물음을 중심으로 한국 및 동·서양 윤리사상과 사회사상을 학습하는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "인문학과 윤리": {
+                        "summary": "고전에 대한 탐구와 성찰을 통해 인문학적 소양과 바람직한 인성, 포용성과 시민성을 길러주는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "국제 관계의 이해": {
+                        "summary": "국가 경계를 넘어선 다양한 이슈와 국제 사회 행위 주체들의 관계를 파악하고 세계시민으로서 의사결정 능력과 태도를 기르는 과목입니다.",
+                        "source": "교과목 안내 53쪽"
+            },
+            "여행지리": {
+                        "summary": "주변과 세계 여러 지역의 자연경관·인문경관, 인간과 환경의 관계를 이해하는 과목입니다. 행복한 여행을 향유하는 데 필요한 지리적 소양을 기릅니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "역사로 탐구하는 현대 세계": {
+                        "summary": "현대 세계의 과제를 역사적 관점에서 파악하고 해결 방안을 모색하는 과목입니다. 미래를 능동적으로 살아갈 수 있는 역량을 기릅니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "사회문제 탐구": {
+                        "summary": "현대사회에서 발생하는 여러 사회문제를 탐구하고 해결 방안을 모색하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "금융과 경제생활": {
+                        "summary": "디지털 금융환경에서 안정된 금융 복지를 누리는 데 필요한 금융 지식, 의사결정 능력, 건전한 재무 태도와 습관을 기르는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "윤리문제 탐구": {
+                        "summary": "미래 사회의 다양한 문제를 윤리적 관점에서 바라보고 합리적 해결 방안을 모색하는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "기후변화와 지속가능한 세계": {
+                        "summary": "인간과 자연의 관계를 성찰하며 지구적 생태위기를 극복하고 지속가능한 세계를 실현하기 위한 방향을 탐구하는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "세계 문제와 미래 사회": {
+                        "summary": "지정학적 갈등, 인권 침해, 환경 파괴와 에너지 고갈, 문화 갈등 등 다양한 세계 문제를 파악하고 미래 사회의 변화 방향을 예측하여 해결 방안을 모색하는 과목입니다.",
+                        "source": "교과목 안내 72쪽"
+            },
+            "물리학": {
+                        "summary": "일상생활, 자연 현상, 첨단 과학기술 속 물리학 법칙을 이해하고 탐구하는 과목입니다. 개인과 사회 문제를 과학적으로 해결하는 역량을 기릅니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "화학": {
+                        "summary": "자연 현상과 일상생활에 적용되는 물질세계의 기본 법칙을 다루며 화학적 소양과 문제해결력을 기르는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "생명과학": {
+                        "summary": "생명과학의 기본 개념을 이해하고 생명 현상에 대한 의문을 과학적이고 창의적으로 해결하는 역량을 기르는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "지구과학": {
+                        "summary": "지구시스템과학과 행성우주과학의 기본 개념을 익히고 지구와 우주 현상을 과학적으로 이해하는 과목입니다.",
+                        "source": "교과목 안내 54쪽"
+            },
+            "역학과 에너지": {
+                        "summary": "역학의 기본 법칙과 다양한 물체의 운동, 열 현상, 열기관, 탄성파 등을 탐구하는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "전자기와 양자": {
+                        "summary": "전기와 자기의 상호작용, 빛의 성질과 응용, 미시세계 등을 탐구하는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "물질과 에너지": {
+                        "summary": "물질 현상과 에너지의 관계에 포함된 화학 개념과 법칙을 이해하고 화학 관련 진로 설정에 필요한 탐구 역량을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "화학 반응의 세계": {
+                        "summary": "다양한 화학 반응과 관련 지식, 탐구 방법을 학습하여 화학 관련 문제를 과학적이고 창의적으로 해결하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "세포와 물질대사": {
+                        "summary": "세포와 생명체에서 일어나는 다양한 생명 현상을 탐구하며 생명과학 탐구 능력과 학문적 소양을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "생물의 유전": {
+                        "summary": "생물의 유전 관련 생명 현상을 탐구하며 유전 현상에 대한 의문을 과학적이고 창의적으로 해결하는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "지구시스템과학": {
+                        "summary": "지구시스템의 구성과 권역 간 상호작용을 이해하고 지구시스템 관련 현상을 과학적으로 탐구하는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "행성우주과학": {
+                        "summary": "행성 지구와 천체, 우주과학의 기본 개념을 이해하고 지구 행성계와 우주 현상을 과학적으로 탐구하는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "과학의 역사와 문화": {
+                        "summary": "인류 문명의 역사 속에서 과학의 특징과 가치를 이해하고, 과학의 사회적 역할을 고려해 미래 사회에 필요한 과학적 소양을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "기후변화와 환경생태": {
+                        "summary": "기후변화와 환경생태의 상호작용에 대한 이해를 바탕으로 미래 사회에 필요한 과학적 소양을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "융합과학 탐구": {
+                        "summary": "빅데이터, 인공지능, 모의실험 등을 활용한 탐구 활동을 통해 융합과학의 역할과 필요성을 이해하고 융합적 사고와 탐구 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 55쪽"
+            },
+            "과학과제 연구": {
+                        "summary": "과학 핵심 개념의 통합적 이해와 과학 탐구 경험을 바탕으로 다양한 탐구 중심 학습을 수행하는 과목입니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "스포츠 생활1": {
+                        "summary": "영역형 스포츠와 생활·자연환경형 스포츠를 심화하여 스포츠 경기 유형에 적합한 체력을 강화하고 경기 수행 능력을 높이는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "스포츠 생활2": {
+                        "summary": "네트형 스포츠와 필드형 스포츠를 심화하여 경기 유형에 적합한 체력을 강화하고 고도화된 스포츠 경기 수행 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "스포츠 문화": {
+                        "summary": "스포츠에 내재한 문화적 측면을 이론적·실제적으로 탐구하고, 스포츠 경기와 통합하여 실천하는 자질을 기르는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "스포츠 과학": {
+                        "summary": "스포츠 영역에 내재한 과학적 원리를 이론적·실제적으로 탐구해 스포츠 현상을 체계적으로 분석하고 효율적으로 실천하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "스포츠 경기 체력": {
+                        "summary": "스포츠 경기에 필요한 체력을 이해하고 경기 체력을 체계적으로 증진·관리하는 방법을 학습하여 효과적으로 관리하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 64쪽"
+            },
+            "음악 연주와 창작": {
+                        "summary": "음악의 본질과 다양한 가치를 경험하며 연주자·작곡자 등 음악적 역할과 사회·문화·산업 속 협업적 역할을 수행할 수 있도록 하는 과목입니다.",
+                        "source": "교과목 안내 57쪽"
+            },
+            "음악 감상과 비평": {
+                        "summary": "음악의 미적 본질과 가치를 경험하고 감상자·청중의 역할을 수행하며 음악적 통찰력과 비판적 사고력을 심화하는 과목입니다.",
+                        "source": "교과목 안내 57쪽"
+            },
+            "미술 창작": {
+                        "summary": "자신의 진로나 관심 분야와 미술을 연결하고 작품 제작을 통해 세계와 소통하는 방법을 창조하는 과목입니다.",
+                        "source": "교과목 안내 57쪽"
+            },
+            "미술 감상과 비평": {
+                        "summary": "미술 작품의 미적 의미를 탐구하고 작품의 해석과 판단을 통해 미술을 깊이 있게 학습하는 과목입니다.",
+                        "source": "교과목 안내 57쪽"
+            },
+            "정보": {
+                        "summary": "인공지능 사회에서 데이터와 정보로 인한 디지털 세상의 변화를 인식하고, 컴퓨팅 사고력을 바탕으로 실생활과 다양한 학문 분야의 문제를 해결하는 능력과 태도를 기르는 과목입니다.",
+                        "source": "교과목 안내 58쪽"
+            },
+            "인공지능 기초": {
+                        "summary": "인공지능의 발전에 따른 사회 변화를 파악하고 원리를 이해하는 과목입니다. 다양한 분야의 문제를 해결하기 위한 도구로 인공지능을 프로그래밍하고 윤리적 쟁점도 다룹니다.",
+                        "source": "교과목 안내 58쪽"
+            },
+            "데이터 과학": {
+                        "summary": "컴퓨팅 사고력을 바탕으로 데이터의 역할과 잠재적 가치, 데이터 기반 문제 해결 과정의 중요성을 이해하는 과목입니다. 합리적 의사결정을 위한 통찰 역량을 기릅니다.",
+                        "source": "교과목 안내 58쪽"
+            },
+            "소프트웨어와 생활": {
+                        "summary": "디지털 사회에서 실생활과 다양한 학문 분야의 문제 해결에 소프트웨어가 창출하는 가치를 이해하는 과목입니다. 문제를 융합적 관점에서 효과적이고 창의적으로 해결하는 능력을 기릅니다.",
+                        "source": "교과목 안내 58쪽"
+            },
+            "일본어": {
+                        "summary": "일상생활과 관련된 기본 표현을 학습하여 기초적인 일본어 의사소통 능력을 기르는 과목입니다. 일본 문화 이해를 바탕으로 타 문화에 대한 포용력도 기릅니다.",
+                        "source": "교과목 안내 59쪽"
+            },
+            "중국어": {
+                        "summary": "중국어를 처음 접하는 학습자가 기초적인 의사소통 능력을 배양하고 언어 소양을 기를 수 있도록 하는 과목입니다.",
+                        "source": "교과목 안내 58쪽"
+            },
+            "일본어 회화": {
+                        "summary": "일본어에서 배운 어휘, 의사소통 표현, 문화 지식을 바탕으로 일상생활의 다양한 분야에서 자연스럽고 유창하게 소통하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 61쪽"
+            },
+            "중국어 회화": {
+                        "summary": "중국어에서 배운 어휘, 의사소통 표현, 문화 지식을 바탕으로 다양한 매체를 활용하여 자연스럽고 유창하게 소통하는 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 59쪽"
+            },
+            "중국 문화": {
+                        "summary": "중국 문화를 상호문화적 관점에서 이해하고 비판적으로 수용하며, 우리 문화의 가치를 새롭게 해석하는 과목입니다.",
+                        "source": "교과목 안내 61쪽"
+            },
+            "일본 문화": {
+                        "summary": "일본의 일상생활과 사회 문화 전반을 폭넓게 이해하고 기초적인 의사소통 능력을 기르며, 자신의 관심 분야 및 진로와 연계하는 과목입니다.",
+                        "source": "교과목 안내 61쪽"
+            },
+            "진로와 직업": {
+                        "summary": "자신의 삶의 의미와 사회적 기여의 중요성을 이해하고, 진로 인식·탐색·설계·관리에 필요한 진로개발 역량을 기르는 과목입니다.",
+                        "source": "교과목 안내 60쪽"
+            },
+            "생태와 환경": {
+                        "summary": "기후변화와 생물다양성 감소 등 환경위기와 지구의 한계를 바탕으로 지속가능한 사회와 삶의 양식을 이해하고 실천하도록 돕는 과목입니다.",
+                        "source": "교과목 안내 60쪽"
+            },
+            "인간과 심리": {
+                        "summary": "심리학을 교양 수준에서 이해하고 실생활 문제 해결에 응용하는 과목입니다. 개인의 건강한 발달과 적응, 의사소통, 창의적 문제해결, 개방적 태도 함양에 도움을 줍니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "교육의 이해": {
+                        "summary": "교육 주체의 일원으로서 교육의 의미와 중요성을 이해하고, 배움과 가르침의 원리와 방법을 익혀 평생학습 사회에서 행복한 삶을 영위하도록 돕는 과목입니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "보건": {
+                        "summary": "건강을 가치 있게 여기고 건강에 대한 균형 있는 시각을 정립하는 과목입니다. 몸과 마음에 대한 이해를 높이고 개인과 공동체의 건강과 삶의 질 향상에 중점을 둡니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "인간과 경제활동": {
+                        "summary": "급변하는 경제 환경 속에서 독립적인 경제 주체가 될 학생들이 실용적 경제 지식과 의사결정 능력을 갖추고 미래 사회 변화에 능동적으로 대처하도록 돕는 과목입니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "논술": {
+                        "summary": "지식의 수용과 전달, 논증을 통한 합리적 설득을 위한 논리적 글쓰기를 다루는 과목입니다. 여러 교과 학습과 독서 활동의 지식을 통합하는 교과융합적 성격을 가집니다.",
+                        "source": "교과목 안내 62쪽"
+            },
+            "공통국어1": {
+                        "summary": "고등학교 국어 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "공통국어2": {
+                        "summary": "고등학교 국어 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "공통수학1": {
+                        "summary": "고등학교 수학 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "공통수학2": {
+                        "summary": "고등학교 수학 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "공통영어1": {
+                        "summary": "고등학교 영어 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "공통영어2": {
+                        "summary": "고등학교 영어 학습의 기초가 되는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "한국사1": {
+                        "summary": "우리 역사의 흐름을 이해하고 역사적 사고력과 주체적인 역사 인식을 기르는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "한국사2": {
+                        "summary": "우리 역사의 흐름을 이해하고 역사적 사고력과 주체적인 역사 인식을 기르는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "통합사회1": {
+                        "summary": "사회 현상을 통합적으로 이해하고 현대 사회의 문제를 탐구하는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "통합사회2": {
+                        "summary": "사회 현상을 통합적으로 이해하고 현대 사회의 문제를 탐구하는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "통합과학1": {
+                        "summary": "자연 현상을 통합적으로 이해하고 과학적 소양과 탐구 역량을 기르는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "통합과학2": {
+                        "summary": "자연 현상을 통합적으로 이해하고 과학적 소양과 탐구 역량을 기르는 공통 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "과학탐구실험1": {
+                        "summary": "실험과 탐구 활동을 통해 과학적 문제 해결력과 탐구 태도를 기르는 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "과학탐구실험2": {
+                        "summary": "실험과 탐구 활동을 통해 과학적 문제 해결력과 탐구 태도를 기르는 과목입니다.",
+                        "source": "공통 과목 안내"
+            },
+            "체육1": {
+                        "summary": "건강 활동과 스포츠 활동을 통해 체력을 기르고 스포츠를 생활화하는 기초를 다지는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "체육2": {
+                        "summary": "체력 운동, 기술형 스포츠, 표현 영역을 심화하여 스포츠 수행 능력을 기르는 과목입니다.",
+                        "source": "교과목 안내 56쪽"
+            },
+            "음악↔미술": {
+                        "summary": "음악 또는 미술을 교차 이수하는 학교 지정 과목입니다. 예술 활동을 통해 감수성과 표현·소통 능력을 기릅니다.",
+                        "source": "교과목 안내 56쪽"
+            }
+};
+
+        function getSubjectCharacter(category, name) {
+            const rawName = String(name || '').replace(/\(교차\)/g, '').trim();
+            const normalized = normalizeName(rawName);
+            let entry = SUBJECT_DETAIL_DATA[rawName] || null;
+            if (!entry) {
+                for (const [key, value] of Object.entries(SUBJECT_DETAIL_DATA)) {
+                    if (normalizeName(key) === normalized) { entry = value; break; }
+                }
+            }
+            if (!entry) {
+                return {
+                    summary: '업로드한 과목 설명자료에서 이 과목의 설명을 직접 찾지 못했습니다. 학교 교육과정 담당자에게 개설 의도와 수업 내용을 확인해 주세요.',
+                    source: '설명자료 확인 필요'
+                };
+            }
+            return entry;
+        }
+
+        const RULES = {
+            "언어·문학 계열": {
+                "언어·문학 계열": {
+                    "core": ["사회와 문화", "세계시민과 지리", "현대사회와 윤리", "윤리와 사상", "인문학과 윤리"],
+                    "rec": ["세계 문화와 영어", "역사로 탐구하는 현대 세계", "사회문제 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "영어Ⅰ", "영어Ⅱ", "영어 독해와 작문", "제2외국어", "한문", "연극", "주제 탐구 독서", "문학과 영상", "영미 문학 읽기", "심화 영어", "심화 영어 독해와 작문", "동아시아 역사 기행", "음악 감상과 비평", "미술 감상과 비평", "한문 고전 읽기", "인간과 철학", "논리와 사고", "독서 토론과 글쓰기", "매체 의사소통", "언어생활 탐구", "음악과 미디어", "미술과 매체", "언어생활과 한자", "논술"]
+                },
+                "국어국문학과": {
+                    "core": ["문학과 영상", "주제 탐구 독서", "언어생활 탐구"],
+                    "rec": ["윤리와 사상", "동아시아 역사 기행", "매체 의사소통"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "사회와 문화", "현대사회와 윤리", "연극", "직무 의사소통", "인문학과 윤리", "논리와 사고", "독서 토론과 글쓰기", "논술"]
+                },
+                "영어영문학과": {
+                    "core": ["미디어 영어", "영어 발표와 토론", "심화 영어"],
+                    "rec": ["영미 문학 읽기", "세계 문화와 영어", "세계사"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "영어Ⅰ", "영어Ⅱ", "영어 독해와 작문", "사회와 문화", "주제 탐구 독서", "독서 토론과 글쓰기", "논술"]
+                },
+                "통번역학과": {
+                    "core": ["영어 발표와 토론", "심화 영어"],
+                    "rec": [],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "영어Ⅰ", "영어Ⅱ", "영어 독해와 작문", "사회와 문화", "현대사회와 윤리", "제2외국어", "주제 탐구 독서", "영미 문학 읽기", "미디어 영어", "인문학과 윤리", "독서 토론과 글쓰기", "세계 문화와 영어", "논술"]
+                }
+            },
+            "인문과학 계열": {
+                "인문과학 계열": {
+                    "core": ["사회와 문화", "현대사회와 윤리", "세계사", "윤리와 사상", "인문학과 윤리"],
+                    "rec": ["동아시아 역사 기행", "역사로 탐구하는 현대 세계", "사회문제 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "세계시민과 지리", "제2외국어", "한문", "연극", "주제 탐구 독서", "문학과 영상", "인간과 철학", "논리와 사고", "음악 감상과 비평", "미술 감상과 비평", "독서 토론과 글쓰기", "언어생활 탐구", "언어생활과 한자", "논술"]
+                },
+                "역사학과": {
+                    "core": ["세계사", "동아시아 역사 기행", "역사로 탐구하는 현대 세계"],
+                    "rec": ["세계시민과 지리", "윤리와 사상", "인문학과 윤리"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "사회와 문화", "주제 탐구 독서", "독서 토론과 글쓰기", "논술"]
+                },
+                "심리학과": {
+                    "core": ["생명과학", "사회와 문화", "확률과 통계"],
+                    "rec": ["현대사회와 윤리", "실용 통계", "세포와 물질대사"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "윤리와 사상", "인문학과 윤리", "독서 토론과 글쓰기", "사회문제 탐구", "논술"]
+                }
+            },
+            "사회과학 계열": {
+                "사회과학 계열": {
+                    "core": ["확률과 통계", "사회와 문화", "세계시민과 지리", "현대사회와 윤리", "경제", "법과 사회"],
+                    "rec": ["실용 통계", "사회문제 탐구", "기후변화와 지속가능한 세계", "도시의 미래 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "연극", "매체 의사소통", "주제 탐구 독서", "미디어 영어", "영어 발표와 토론", "세계사", "윤리와 사상", "인문학과 윤리", "국제 관계의 이해", "독서 토론과 글쓰기", "세계 문화와 영어", "역사로 탐구하는 현대 세계", "논술"]
+                },
+                "정치외교학과": {
+                    "core": ["세계사", "사회와 문화", "법과 사회"],
+                    "rec": ["경제", "역사로 탐구하는 현대 세계", "사회문제 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "세계시민과 지리", "윤리와 사상", "국제 관계의 이해", "독서 토론과 글쓰기", "인문학과 윤리", "논술"]
+                },
+                "행정학과": {
+                    "core": ["사회와 문화", "법과 사회", "경제"],
+                    "rec": ["윤리와 사상", "실용 통계", "도시의 미래 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "현대사회와 윤리", "독서 토론과 글쓰기", "사회문제 탐구", "논술"]
+                },
+                "경찰행정학과": {
+                    "core": ["법과 사회", "사회와 문화", "윤리와 사상"],
+                    "rec": ["현대사회와 윤리", "기초체육전공실기"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "경제", "세계사", "운동과 건강", "독서 토론과 글쓰기", "인문학과 윤리", "논술"]
+                },
+                "미디어커뮤니케이션학과": {
+                    "core": ["사회와 문화", "현대사회와 윤리", "매체 의사소통"],
+                    "rec": ["세계사", "사회문제 탐구", "미디어 영어"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "확률과 통계", "경제", "정보", "독서 토론과 글쓰기", "언어생활 탐구", "논술"]
+                }
+            },
+            "경영·경제 계열": {
+                "경영·경제 계열": {
+                    "core": ["대수", "미적분Ⅰ", "확률과 통계", "경제", "사회와 문화", "법과 사회"],
+                    "rec": ["경제 수학", "실용 통계", "미적분Ⅱ", "기하", "사회문제 탐구", "도시의 미래 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "영어 독해와 작문", "세계시민과 지리", "현대사회와 윤리", "정보", "주제 탐구 독서", "영어 발표와 토론", "데이터 과학", "독서 토론과 글쓰기", "세계 문화와 영어", "논술"]
+                },
+                "경영학과": {
+                    "core": ["확률과 통계", "경제", "사회와 문화"],
+                    "rec": ["경제 수학", "실용 통계", "세계시민과 지리"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "영어 독해와 작문", "현대사회와 윤리", "독서 토론과 글쓰기", "사회문제 탐구", "논술"]
+                },
+                "경제학과": {
+                    "core": ["확률과 통계", "경제", "경제 수학", "실용 통계"],
+                    "rec": ["사회와 문화", "미적분Ⅱ"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "세계사", "법과 사회", "독서 토론과 글쓰기", "사회문제 탐구", "논술"]
+                }
+            },
+            "교육 계열": {
+                "교육 계열": {
+                    "core": ["확률과 통계", "현대사회와 윤리", "윤리와 사상", "인문학과 윤리"],
+                    "rec": ["실용 통계", "사회문제 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "대수", "미적분Ⅰ", "사회와 문화", "주제 탐구 독서", "심화 영어", "음악 감상과 비평", "미술 감상과 비평", "독서 토론과 글쓰기", "논술"]
+                },
+                "교육학과": {
+                    "core": ["사회와 문화", "윤리와 사상", "확률과 통계"],
+                    "rec": ["인문학과 윤리", "사회문제 탐구", "심화 영어"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "경제", "현대사회와 윤리", "실용 통계", "독서 토론과 글쓰기", "논술"]
+                },
+                "수학교육과": {
+                    "core": ["기하", "미적분Ⅱ", "경제 수학", "확률과 통계"],
+                    "rec": ["실용 통계", "수학과 문화", "정보"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "대수", "미적분Ⅰ", "물리학", "인공지능 기초", "독서 토론과 글쓰기", "논술"]
+                },
+                "초등교육과": {
+                    "core": ["사회와 문화", "생명과학", "윤리와 사상"],
+                    "rec": ["확률과 통계", "음악 연주와 창작", "미술 창작"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "대수", "미적분Ⅰ", "통합사회1", "통합사회2", "통합과학1", "통합과학2", "현대사회와 윤리", "운동과 건강", "독서 토론과 글쓰기", "논술"]
+                }
+            },
+            "자연과학 계열": {
+                "자연과학 계열": {
+                    "core": ["대수", "미적분Ⅰ", "확률과 통계", "물리학", "화학", "생명과학", "지구과학", "미적분Ⅱ", "기하"],
+                    "rec": ["실용 통계", "역학과 에너지", "물질과 에너지", "세포와 물질대사", "지구시스템과학", "데이터 과학", "융합과학 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "정보", "경제 수학", "전자기와 양자", "화학 반응의 세계", "생물의 유전", "행성우주과학", "인공지능 기초", "독서 토론과 글쓰기", "수학과 문화", "과학의 역사와 문화", "논술"]
+                },
+                "수학과": {
+                    "core": ["기하", "미적분Ⅱ", "확률과 통계", "실용 통계"],
+                    "rec": ["경제 수학", "정보", "데이터 과학"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "물리학", "역학과 에너지", "인공지능 기초", "수학과 문화", "논술"]
+                },
+                "물리학과": {
+                    "core": ["기하", "미적분Ⅱ", "물리학", "역학과 에너지", "전자기와 양자"],
+                    "rec": ["화학", "정보", "융합과학 탐구"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "지구과학", "물질과 에너지", "행성우주과학", "인공지능 기초", "논술"]
+                },
+                "화학과": {
+                    "core": ["기하", "미적분Ⅱ", "화학", "화학 반응의 세계", "물질과 에너지"],
+                    "rec": ["물리학", "생명과학", "전자기와 양자"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "세포와 물질대사", "융합과학 탐구", "논술"]
+                },
+                "생명과학과": {
+                    "core": ["미적분Ⅱ", "화학", "생명과학", "세포와 물질대사", "생물의 유전"],
+                    "rec": ["물질과 에너지", "확률과 통계", "융합과학 탐구"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "기하", "화학 반응의 세계", "생태와 환경", "논술"]
+                }
+            },
+            "공학 계열": {
+                "공학 계열": {
+                    "core": ["대수", "미적분Ⅰ", "확률과 통계", "물리학", "화학", "정보", "미적분Ⅱ", "기하"],
+                    "rec": ["역학과 에너지", "물질과 에너지", "인공지능 기초", "데이터 과학"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "생명과학", "기술·가정", "전자기와 양자", "화학 반응의 세계", "로봇과 공학세계", "독서 토론과 글쓰기", "창의 공학 설계", "소프트웨어와 생활", "인공지능과 미래사회", "과학의 역사와 문화", "논술"]
+                },
+                "건축공학과": {
+                    "core": ["기하", "미적분Ⅱ", "물리학", "역학과 에너지"],
+                    "rec": ["지구과학", "미술사", "사회문제 탐구"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "화학", "미술 창작", "도시의 미래 탐구", "논술"]
+                },
+                "기계공학과": {
+                    "core": ["기하", "미적분Ⅱ", "물리학", "역학과 에너지", "전자기와 양자"],
+                    "rec": ["화학", "정보", "인공지능 기초"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "생명과학", "기술·가정", "물질과 에너지", "화학 반응의 세계", "데이터 과학", "로봇과 공학세계", "창의 공학 설계", "소프트웨어와 생활", "논술"]
+                },
+                "전자공학과": {
+                    "core": ["기하", "미적분Ⅱ", "물리학", "전자기와 양자", "정보"],
+                    "rec": ["화학", "역학과 에너지", "인공지능 기초"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "지구과학", "기술·가정", "물질과 에너지", "화학 반응의 세계", "데이터 과학", "로봇과 공학세계", "창의 공학 설계", "소프트웨어와 생활", "논술"]
+                },
+                "컴퓨터공학과": {
+                    "core": ["기하", "미적분Ⅱ", "정보", "인공지능 기초"],
+                    "rec": ["물리학", "데이터 과학", "인공지능과 미래사회"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "로봇과 공학세계", "창의 공학 설계", "소프트웨어와 생활", "논술"]
+                },
+                "화학공학과": {
+                    "core": ["기하", "미적분Ⅱ", "물리학", "화학", "화학 반응의 세계", "물질과 에너지"],
+                    "rec": ["생명과학", "역학과 에너지"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "세포와 물질대사", "융합과학 탐구", "논술"]
+                }
+            },
+            "의·약학 계열": {
+                "의·약학 계열": {
+                    "core": ["대수", "미적분Ⅰ", "확률과 통계", "화학", "생명과학", "미적분Ⅱ", "기하"],
+                    "rec": ["화학 반응의 세계", "세포와 물질대사", "생물의 유전"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "물리학", "운동과 건강", "물질과 에너지", "융합과학 탐구", "독서 토론과 글쓰기", "논술"]
+                },
+                "의예과": {
+                    "core": ["미적분Ⅱ", "화학", "생명과학", "세포와 물질대사", "생물의 유전"],
+                    "rec": ["물리학", "화학 반응의 세계", "확률과 통계"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "기하", "윤리와 사상", "운동과 건강", "물질과 에너지", "인문학과 윤리", "융합과학 탐구", "논술"]
+                },
+                "약학과": {
+                    "core": ["미적분Ⅱ", "화학", "생명과학", "화학 반응의 세계", "물질과 에너지"],
+                    "rec": ["세포와 물질대사", "물리학"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "기하", "생물의 유전", "융합과학 탐구", "논술"]
+                }
+            },
+            "간호·보건 계열": {
+                "간호·보건 계열": {
+                    "core": ["생명과학", "화학", "확률과 통계"],
+                    "rec": ["세포와 물질대사", "사회와 문화"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "물리학", "운동과 건강", "생물의 유전", "독서 토론과 글쓰기", "논술"]
+                },
+                "간호학과": {
+                    "core": ["화학", "생명과학", "사회와 문화"],
+                    "rec": ["세포와 물질대사", "윤리와 사상", "확률과 통계"],
+                    "edu": ["대수", "미적분Ⅰ", "화법과 언어", "독서와 작문", "문학", "현대사회와 윤리", "운동과 건강", "생물의 유전", "사회문제 탐구", "논술"]
+                },
+                "물리치료학과": {
+                    "core": ["생명과학", "물리학", "운동과 건강"],
+                    "rec": ["화학", "사회와 문화"],
+                    "edu": ["대수", "미적분Ⅰ", "확률과 통계", "화법과 언어", "독서와 작문", "문학", "세포와 물질대사", "논술"]
+                }
+            },
+            "예술·체육 계열": {
+                "예술·체육 계열": {
+                    "core": ["미술 창작", "미술사", "음악 연주와 창작", "기초체육전공실기", "운동과 건강"],
+                    "rec": ["문학과 영상", "매체 의사소통", "스포츠 탐구"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "사회와 문화", "현대사회와 윤리", "연극", "미술 감상과 비평", "음악 감상과 비평", "독서 토론과 글쓰기", "논술"]
+                },
+                "체육학과": {
+                    "core": ["기초체육전공실기", "운동과 건강", "스포츠 과학"],
+                    "rec": ["생명과학", "스포츠 생활1"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "영어Ⅰ", "사회와 문화", "스포츠 생활2", "세포와 물질대사", "논술"]
+                },
+                "시각디자인학과": {
+                    "core": ["미술사", "미술 창작", "문학과 영상"],
+                    "rec": ["정보", "매체 의사소통"],
+                    "edu": ["화법과 언어", "독서와 작문", "문학", "미디어 영어", "논술"]
+                }
+            }
+        };
+
+        const KEYWORD_MAP = {
+            "건축": "공학 계열",
+            "토목": "공학 계열",
+            "도시": "공학 계열",
+            "간호": "간호·보건 계열",
+            "물리치료": "간호·보건 계열",
+            "임상병리": "간호·보건 계열",
+            "보건": "간호·보건 계열",
+            "신문": "사회과학 계열",
+            "방송": "사회과학 계열",
+            "광고": "사회과학 계열",
+            "홍보": "사회과학 계열",
+            "미디어": "사회과학 계열",
+            "경찰": "사회과학 계열",
+            "행정": "사회과학 계열",
+            "정치": "사회과학 계열",
+            "외교": "사회과학 계열",
+            "사회": "사회과학 계열",
+            "복지": "사회과학 계열",
+            "역사": "인문과학 계열",
+            "사학": "인문과학 계열",
+            "철학": "인문과학 계열",
+            "심리": "인문과학 계열",
+            "국어": "언어·문학 계열",
+            "영어": "언어·문학 계열",
+            "일어": "언어·문학 계열",
+            "중어": "언어·문학 계열",
+            "문예": "언어·문학 계열",
+            "경영": "경영·경제 계열",
+            "경제": "경영·경제 계열",
+            "회계": "경영·경제 계열",
+            "세무": "경영·경제 계열",
+            "무역": "경영·경제 계열",
+            "통상": "경영·경제 계열",
+            "관광": "경영·경제 계열",
+            "교육": "교육 계열",
+            "수학": "자연과학 계열",
+            "물리": "자연과학 계열",
+            "화학": "자연과학 계열",
+            "생물": "자연과학 계열",
+            "생명": "자연과학 계열",
+            "지구": "자연과학 계열",
+            "천문": "자연과학 계열",
+            "대기": "자연과학 계열",
+            "식품": "자연과학 계열",
+            "영양": "자연과학 계열",
+            "환경": "공학 계열",
+            "기계": "공학 계열",
+            "전자": "공학 계열",
+            "전기": "공학 계열",
+            "컴퓨터": "공학 계열",
+            "소프트웨어": "공학 계열",
+            "신소재": "공학 계열",
+            "재료": "공학 계열",
+            "항공": "공학 계열",
+            "우주": "공학 계열",
+            "산업": "공학 계열",
+            "의학": "의·약학 계열",
+            "의예": "의·약학 계열",
+            "치의": "의·약학 계열",
+            "한의": "의·약학 계열",
+            "수의": "의·약학 계열",
+            "약학": "의·약학 계열",
+            "미술": "예술·체육 계열",
+            "디자인": "예술·체육 계열",
+            "체육": "예술·체육 계열",
+            "스포츠": "예술·체육 계열",
+            "음악": "예술·체육 계열",
+            "무용": "예술·체육 계열",
+            "연극": "예술·체육 계열",
+            "영화": "예술·체육 계열"
+        };
+
+        const TRACK_INFO = {
+            "언어·문학 계열": { desc: "인간의 언어, 문학을 탐구하며 융합적 사고력과 텍스트 분석 능력이 요구됩니다.", strategy: "단순한 암기를 넘어 텍스트 이면의 사회적, 역사적 맥락을 파악하는 통찰력을 길러야 합니다. 제2외국어 및 심화 언어 과목을 통한 깊이 있는 탐구를 긍정적으로 평가합니다." },
+            "인문과학 계열": { desc: "역사, 철학, 심리 등 인간과 문화에 대한 본질적 이해를 탐구합니다.", strategy: "인간과 사회에 대한 깊이 있는 이해를 바탕으로 논리적이고 비판적인 사고력을 기르는 과목을 이수하는 것이 중요합니다." },
+            "사회과학 계열": { desc: "사회 현상, 법, 미디어 등을 분석하고 합리적인 문제 해결 능력이 중요합니다.", strategy: "사회 문제에 대한 분석력과 통계적 사고 역량이 요구됩니다. 확률과 통계, 실용 통계 등을 이수하여 데이터 분석 역량을 보여주는 것을 권장합니다." },
+            "경영·경제 계열": { desc: "경제 현상과 기업 경영을 분석하며 합리적인 의사결정 능력이 중요합니다.", strategy: "상경계열 진학 시 수학적, 통계적 사고 역량이 절대적으로 중요합니다. 확률과 통계, 미적분, 경제 수학 등을 이수하여 수리적 역량을 보여주는 것이 핵심 전략입니다." },
+            "교육 계열": { desc: "효과적인 지식 전달과 인격 형성을 돕기 위해 의사소통 능력과 인간, 사회에 대한 폭넓은 이해가 필수적입니다.", strategy: "자신의 세부 전공에 맞는 핵심 과목 심화 이수는 기본이며, 교육학적 소양을 기를 수 있는 사회문제 탐구, 윤리 관련 과목을 이수하여 가치관을 드러내야 합니다." },
+            "자연과학 계열": { desc: "자연 현상의 원리를 수학적, 과학적으로 규명하며 논리적 추론과 깊이 있는 탐구 역량이 요구됩니다.", strategy: "희망 전공과 직결되는 수학(미적분/기하) 및 기초 과학(물/화/생/지) 과목의 수직적 심화 이수가 대입의 핵심 지표입니다." },
+            "공학 계열": { desc: "물리학, 화학 등 기초 과학과 수학적 모델링 역량을 바탕으로 실생활의 문제를 해결하는 학문입니다.", strategy: "공학계열의 가장 강력한 무기는 '수학(미적분, 기하)과 물리학, 화학'의 완벽한 이수입니다. 물/화 진로과목 이수를 최우선으로 고려해야 합니다." },
+            "의·약학 계열": { desc: "생명 현상에 대한 깊은 이해와 고도의 윤리 의식이 요구됩니다.", strategy: "생명과학과 화학 전반에 걸친 탄탄한 기초 역량을 수능과 내신 모두에서 증명해야 합니다. 윤리적 딜레마를 다루는 인문학적 소양(윤리 등)을 곁들이면 다방면의 우수성을 보여줄 수 있습니다." },
+            "간호·보건 계열": { desc: "인간의 건강과 복지 증진을 위한 생명과학적 지식과 희생 정신이 요구됩니다.", strategy: "생명과학과 화학의 기초 지식과 더불어 인간에 대한 이해를 높이는 사회, 윤리 과목 이수를 권장합니다." },
+            "예술·체육 계열": { desc: "창의적 표현력과 신체적 능력을 극대화하며, 디지털 미디어 및 과학과의 융합 역량이 강조됩니다.", strategy: "단순한 실기 능력을 넘어 이론적 깊이를 더하는 전공실기/미술사 선택과 함께, 시대 흐름에 맞는 정보(미디어) 또는 생명(스포츠과학) 과목과의 융합을 추천합니다." }
+        };
+
+        const HIERARCHY = {
+            "수학": [ { level: "공통", subjects: ["공통수학1,2"] }, { level: "일반(기초)", subjects: ["대수", "확률과 통계"] }, { level: "일반(심화)", subjects: ["미적분Ⅰ"] }, { level: "진로/융합", subjects: ["미적분Ⅱ", "기하", "고급 대수", "전문 수학"] } ],
+            "물리학": [ { level: "공통", subjects: ["통합과학1,2"] }, { level: "일반", subjects: ["물리학"] }, { level: "진로", subjects: ["역학과 에너지", "전자기와 양자"] } ],
+            "화학": [ { level: "공통", subjects: ["통합과학1,2"] }, { level: "일반", subjects: ["화학"] }, { level: "진로", subjects: ["물질과 에너지", "화학 반응의 세계"] } ],
+            "생명과학": [ { level: "공통", subjects: ["통합과학1,2"] }, { level: "일반", subjects: ["생명과학"] }, { level: "진로", subjects: ["세포와 물질대사", "생물의 유전"] } ],
+            "지구과학": [ { level: "공통", subjects: ["통합과학1,2"] }, { level: "일반", subjects: ["지구과학"] }, { level: "진로", subjects: ["지구시스템과학", "행성우주과학"] } ]
+        };
+
+
+const EXPECTED_FIXED_CREDITS = 108;
+const EXPECTED_CHOICE_CREDITS = 66;
+const EXPECTED_TOTAL_CREDITS = 174;
+const EXPECTED_CHOICE_COUNT = Object.values(GROUP_MAX_LIMITS).reduce((sum, value) => sum + value, 0);
+const GRADE_CHOICE_GROUPS = { 2: ["A", "B", "C"], 3: ["D", "E", "F", "G", "H", "I", "J", "K"] };
+const GRADE_EXPECTED_CHOICE_COUNTS = Object.fromEntries(Object.entries(GRADE_CHOICE_GROUPS).map(([grade, groups]) => [grade, groups.reduce((sum, group) => sum + GROUP_MAX_LIMITS[group], 0)]));
+
+const fixedGroups = new Set(["공통", "필수"]);
+const groupInfoMap = Object.fromEntries(GROUP_INFO.map((group) => [group.code, group]));
+const DRAFT_STORAGE_KEY = "ungcheonCourseSelectionLeafletDraftV1";
+const state = { selected: {}, resultData: null, activeSem: "전체", lastFocus: null, showFirstYearCommon: false, showThirdYearPreview: false, saveReady: false };
+
+const LEARNING_FOCUS = {
+  "국어": "읽기·쓰기·말하기·듣기 활동과 자료 분석을 통해 비판적 사고와 의사소통 능력을 기릅니다.",
+  "수학": "개념과 원리를 이해하고 문제 해결, 추론, 모델링 활동으로 수학적 사고력을 확장합니다.",
+  "영어": "듣기·말하기·읽기·쓰기 활동을 실제 맥락과 연결하여 영어 의사소통 능력을 기릅니다.",
+  "사회": "사회 현상과 쟁점을 자료에 근거해 분석하고, 다양한 관점에서 해결 방안을 탐구합니다.",
+  "과학": "과학 개념을 탐구·실험·자료 해석과 연결하여 자연 현상을 설명하고 문제를 해결합니다.",
+  "체육": "신체 활동의 원리와 수행 방법을 이해하고 실제 활동을 통해 건강·협업 역량을 기릅니다.",
+  "예술": "감상과 표현, 창작 활동을 통해 예술적 감수성과 창의적 소통 능력을 기릅니다.",
+  "정보": "컴퓨팅 사고와 데이터·소프트웨어 활용을 바탕으로 실제 문제의 해결 과정을 설계합니다.",
+  "제2외국어/한문": "언어와 문화의 기초를 익히고 실제 의사소통과 문화 이해 활동으로 활용 능력을 높입니다.",
+  "교양": "인간과 사회, 건강, 교육, 경제에 관한 질문을 탐구하며 합리적 판단과 자기 이해를 넓힙니다."
+};
+const RECOMMEND_BY_CATEGORY = {
+  "국어": "글을 읽고 토론하거나 자신의 생각을 논리적으로 표현하는 활동을 좋아하는 학생에게 추천합니다.",
+  "수학": "원리를 끝까지 따져 보고 여러 풀이를 비교하거나 수리적으로 설명하는 활동을 좋아하는 학생에게 추천합니다.",
+  "영어": "다른 문화와 주제에 관심이 많고 영어로 정보를 이해하고 표현하는 힘을 키우고 싶은 학생에게 추천합니다.",
+  "사회": "사회 문제를 여러 관점에서 살펴보고 자료와 근거를 바탕으로 토론하는 학생에게 추천합니다.",
+  "과학": "자연 현상의 원인을 궁금해하고 실험·탐구·자료 분석으로 답을 찾는 학생에게 추천합니다.",
+  "체육": "신체 활동을 즐기며 스포츠 수행, 건강 관리, 경기 분석을 깊이 배우고 싶은 학생에게 추천합니다.",
+  "예술": "작품을 감상하고 자신의 생각과 감정을 창의적으로 표현하는 활동을 좋아하는 학생에게 추천합니다.",
+  "정보": "컴퓨터, 인공지능, 데이터에 관심이 있고 절차적으로 문제를 해결하는 활동을 좋아하는 학생에게 추천합니다.",
+  "제2외국어/한문": "다른 나라의 언어와 문화에 관심이 있고 실제 의사소통 능력을 기르고 싶은 학생에게 추천합니다.",
+  "교양": "사람과 사회를 폭넓게 이해하고 자신의 삶과 진로를 성찰하고 싶은 학생에게 추천합니다."
+};
+const CAREER_BY_CATEGORY = {
+  "국어": "국어국문학, 문예창작, 언론·미디어, 교육, 광고·콘텐츠",
+  "수학": "수학, 통계, 경제·경영, 공학, 컴퓨터·인공지능, 자연과학",
+  "영어": "영어영문학, 통번역, 국제학, 관광·무역, 언론·콘텐츠, 교육",
+  "사회": "정치외교, 행정, 법학, 경제·경영, 사회학, 지리·역사, 윤리·철학",
+  "과학": "물리·화학·생명·지구과학, 의·약학, 간호·보건, 공학, 환경·에너지",
+  "체육": "체육교육, 스포츠과학, 스포츠재활, 운동처방, 스포츠산업·경영",
+  "예술": "음악, 미술, 디자인, 영상·콘텐츠, 공연예술, 예술교육",
+  "정보": "컴퓨터공학, 소프트웨어, 인공지능, 데이터과학, 정보보안, 디지털콘텐츠",
+  "제2외국어/한문": "어문학, 통번역, 국제관계, 무역·관광, 지역학, 교육",
+  "교양": "교육, 심리, 보건, 사회복지, 경제·경영, 상담·공공서비스"
+};
+const CAREER_OVERRIDES = {
+  "데이터 과학": "데이터과학, 통계학, 인공지능, 컴퓨터공학, 산업공학, 경영정보",
+  "인공지능 기초": "인공지능, 컴퓨터공학, 소프트웨어, 로봇공학, 데이터과학",
+  "인공지능 수학": "인공지능, 데이터과학, 수학, 통계학, 컴퓨터공학",
+  "소프트웨어와 생활": "소프트웨어, 컴퓨터공학, 디지털콘텐츠, 정보교육, 서비스기획",
+  "경제 수학": "경제학, 경영학, 금융, 회계, 통계학, 산업공학",
+  "보건": "간호학, 보건학, 의학, 약학, 물리치료, 작업치료",
+  "인간과 심리": "심리학, 상담, 교육, 사회복지, 간호·보건, 인사·조직",
+  "교육의 이해": "교육학, 교직, 상담, 청소년지도, 평생교육",
+  "스포츠 경기 체력": "체육교육, 스포츠과학, 운동처방, 스포츠재활, 선수트레이닝",
+  "문학과 영상": "국어국문학, 문예창작, 영화·영상, 미디어콘텐츠, 광고·홍보"
+};
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
+  })[character]);
+}
+function normalizeName(name) {
+  return String(name || "")
+    .normalize("NFKC")
+    .replace(/\([^)]*\)|（[^）]*）/g, "")
+    .replace(/[Ⅰⅰ]/g, "I")
+    .replace(/[Ⅱⅱ]/g, "II")
+    .replace(/[·ㆍ・]/g, "")
+    .replace(/[^\p{L}\p{N}]/gu, "")
+    .toLowerCase();
+}
+function subjectId(semester, subject) { return `${semester}_${subject.name}`; }
+function getSelectionUnit(item) { return item.selectionKey || `${item.sem}_${normalizeName(item.name)}`; }
+function isFixed(subject) { return fixedGroups.has(subject.group); }
+function sumCredits(items) { return items.reduce((sum, item) => sum + (Number(item.credit) || 0), 0); }
+function getAllSubjects() {
+  const subjects = [];
+  SEMESTERS.forEach((semester) => CATEGORIES.forEach((category) => {
+    (CURRICULUM[semester]?.[category] || []).forEach((subject) => {
+      subjects.push({ sem: semester, cat: category, ...subject, id: subjectId(semester, subject) });
+    });
+  }));
+  return subjects;
+}
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove("show"), 3200);
+}
+function autoSelectRequired() {
+  state.selected = {};
+  getAllSubjects().forEach((subject) => {
+    if (isFixed(subject)) state.selected[subject.id] = subject;
+  });
+}
+function selectedChoiceIds(map = state.selected) {
+  return Object.keys(map).filter((id) => map[id] && !isFixed(map[id]));
+}
+function getInputValue(id) {
+  return document.getElementById(id)?.value || "";
+}
+function setInputValue(id, value) {
+  const element = document.getElementById(id);
+  if (element) element.value = value || "";
+}
+function draftHasContent(draft) {
+  return Boolean(
+    (Array.isArray(draft?.selectedIds) && draft.selectedIds.length) ||
+    draft?.studentName || draft?.deptInput || draft?.track || draft?.resultData
+  );
+}
+function formatDraftTime(value) {
+  if (!value) return "저장된 시각 정보 없음";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "저장된 시각 정보 없음";
+  return date.toLocaleString("ko-KR", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+function buildDraft() {
+  return {
+    savedAt: new Date().toISOString(),
+    selectedIds: selectedChoiceIds(),
+    studentName: getInputValue("studentName"),
+    deptInput: getInputValue("deptInput"),
+    track: getInputValue("trackSelect"),
+    resultData: state.resultData,
+    activeSem: state.activeSem,
+    showFirstYearCommon: state.showFirstYearCommon,
+    showThirdYearPreview: state.showThirdYearPreview
+  };
+}
+function persistDraft() {
+  if (!state.saveReady) return;
+  try {
+    localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(buildDraft()));
+  } catch (error) {
+    console.warn("임시저장에 실패했습니다.", error);
+  }
+}
+function restoreDraft(draft) {
+  autoSelectRequired();
+  setInputValue("studentName", draft.studentName || "");
+  setInputValue("deptInput", draft.deptInput || "");
+  setInputValue("trackSelect", draft.track || "");
+  state.resultData = draft.resultData || null;
+  state.activeSem = SEMESTERS.includes(draft.activeSem) || draft.activeSem === "전체" ? draft.activeSem : "전체";
+  state.showFirstYearCommon = Boolean(draft.showFirstYearCommon);
+  state.showThirdYearPreview = Boolean(draft.showThirdYearPreview);
+  const subjectById = Object.fromEntries(getAllSubjects().map((subject) => [subject.id, subject]));
+  (Array.isArray(draft.selectedIds) ? draft.selectedIds : []).forEach((id) => {
+    const subject = subjectById[id];
+    if (!subject || isFixed(subject)) return;
+    const check = canAdd(subject);
+    if (check.ok) state.selected[subject.id] = subject;
+  });
+}
+function askRestoreDraft() {
+  let draft = null;
+  try {
+    draft = JSON.parse(localStorage.getItem(DRAFT_STORAGE_KEY) || "null");
+  } catch (error) {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    return false;
+  }
+  if (!draftHasContent(draft)) return false;
+  const selectedCount = Array.isArray(draft.selectedIds) ? draft.selectedIds.length : 0;
+  const message = `브라우저에 임시저장된 과목 선택 자료가 있습니다.
+
+저장 시각: ${formatDraftTime(draft.savedAt)}
+선택과목: ${selectedCount}개
+학생 이름: ${draft.studentName || "없음"}
+희망 학과: ${draft.deptInput || draft.track || "없음"}
+
+이 자료를 불러올까요?`;
+  if (confirm(message)) {
+    restoreDraft(draft);
+    return true;
+  }
+  return false;
+}
+function resetSelections() {
+  autoSelectRequired();
+  renderAll();
+  showToast("선택과목을 초기화했습니다.");
+}
+function selectedUnitsByGroup(map = state.selected) {
+  const sets = Object.fromEntries(Object.keys(GROUP_MAX_LIMITS).map((group) => [group, new Set()]));
+  Object.values(map).forEach((subject) => {
+    if (sets[subject.group]) sets[subject.group].add(getSelectionUnit(subject));
+  });
+  return Object.fromEntries(Object.entries(sets).map(([group, values]) => [group, values.size]));
+}
+function selectedByGroupAndSem(group, semester, map = state.selected) {
+  return Object.values(map).filter((subject) => subject.group === group && subject.sem === semester);
+}
+function duplicateErrors(map = state.selected) {
+  const errors = [];
+  DUPLICATE_RESTRICTED_GROUPS.forEach((group) => {
+    const sameNames = {};
+    Object.values(map).forEach((subject) => {
+      if (subject.group !== group) return;
+      (sameNames[normalizeName(subject.name)] ||= []).push(subject);
+    });
+    Object.values(sameNames).forEach((items) => {
+      if (items.length > 1) {
+        errors.push(`선택군 ${group}: 「${items[0].name}」은(는) ${items.map((item) => item.sem).join(", ")}에 중복 선택할 수 없습니다.`);
+      }
+    });
+  });
+  return errors;
+}
+function countKoreanMathEnglishChoices(map = state.selected) {
+  return Object.values(map).filter((subject) => !isFixed(subject) && KOREAN_MATH_ENGLISH_CATEGORIES.has(subject.cat)).length;
+}
+
+function duplicateErrorsForGroups(groups, map = state.selected) {
+  const groupSet = new Set(groups);
+  const errors = [];
+  DUPLICATE_RESTRICTED_GROUPS.filter((group) => groupSet.has(group)).forEach((group) => {
+    const sameNames = {};
+    Object.values(map).forEach((subject) => {
+      if (subject.group !== group) return;
+      (sameNames[normalizeName(subject.name)] ||= []).push(subject);
+    });
+    Object.values(sameNames).forEach((items) => {
+      if (items.length > 1) {
+        errors.push(`선택군 ${group}: 「${items[0].name}」은(는) ${items.map((item) => item.sem).join(", ")}에 중복 선택할 수 없습니다.`);
+      }
+    });
+  });
+  return errors;
+}
+function validationErrorsForGroups(groups, map = state.selected) {
+  const errors = [];
+  const groupSet = new Set(groups);
+  const counts = selectedUnitsByGroup(map);
+  groups.forEach((group) => {
+    const required = GROUP_MAX_LIMITS[group];
+    if ((counts[group] || 0) !== required) errors.push(`선택군 ${group}: ${counts[group] || 0}/${required}개 선택했습니다.`);
+  });
+  Object.entries(GROUP_SEMESTER_REQUIREMENTS).forEach(([group, requirements]) => {
+    if (!groupSet.has(group)) return;
+    Object.entries(requirements).forEach(([semester, required]) => {
+      const count = selectedByGroupAndSem(group, semester, map).length;
+      if (count !== required) errors.push(`선택군 ${group}: ${semester}에서 ${count}/${required}개 선택했습니다.`);
+    });
+  });
+  return errors.concat(duplicateErrorsForGroups(groups, map));
+}
+function selectedChoicesForGroups(groups, map = state.selected) {
+  const groupSet = new Set(groups);
+  return Object.values(map).filter((subject) => !isFixed(subject) && groupSet.has(subject.group));
+}
+function gradeValidationStatus(grade, map = state.selected) {
+  const groups = GRADE_CHOICE_GROUPS[grade];
+  const counts = selectedUnitsByGroup(map);
+  const selectedCount = groups.reduce((sum, group) => sum + (counts[group] || 0), 0);
+  const requiredCount = GRADE_EXPECTED_CHOICE_COUNTS[grade];
+  const selectedCredits = sumCredits(selectedChoicesForGroups(groups, map));
+  const errors = validationErrorsForGroups(groups, map);
+  return { grade, groups, selectedCount, requiredCount, selectedCredits, errors, complete: errors.length === 0 };
+}
+function renderGradeValidationPanel(status, options = {}) {
+  const optional = Boolean(options.optional);
+  const panelClass = status.complete ? "good" : optional ? "neutral" : "error";
+  const completeText = `${status.grade}학년 선택과목 완료`;
+  const pendingText = optional ? `${status.grade}학년 선택과목 미완료(미리보기)` : `${status.grade}학년 선택과목 확인 필요`;
+  const title = status.complete ? completeText : pendingText;
+  const detail = status.complete
+    ? `${status.grade}학년 선택군 조건을 모두 만족했습니다.`
+    : (optional ? `${status.grade}학년 선택과목은 미리보기이므로 지금 완료하지 않아도 됩니다.` : "아래 선택군을 더 확인해 주세요.");
+  const statusItems = status.groups.map((group) => {
+    const count = selectedUnitsByGroup()[group] || 0;
+    const good = count === GROUP_MAX_LIMITS[group];
+    return `<div class="validation-item ${good ? "good" : "bad"}">${group} ${count}/${GROUP_MAX_LIMITS[group]} ${good ? "✓" : "!"}</div>`;
+  }).join("");
+  const errorHtml = status.errors.length ? `<div class="validation-detail">${status.errors.map(esc).join("<br>")}</div>` : "";
+  return `<div class="validation-overview ${panelClass}">
+    <div class="validation-title-line"><b>${esc(title)}</b><span class="validation-count-pill">${status.selectedCount}/${status.requiredCount}개 · ${status.selectedCredits}학점</span></div>
+    <div class="validation-detail">${esc(detail)}</div>
+    ${errorHtml}
+    <div class="validation-grid">${statusItems}</div>
+  </div>`;
+}
+function validationErrors(map = state.selected) {
+  const errors = [];
+  const counts = selectedUnitsByGroup(map);
+  Object.entries(GROUP_MAX_LIMITS).forEach(([group, required]) => {
+    if ((counts[group] || 0) !== required) errors.push(`선택군 ${group}: ${counts[group] || 0}/${required}개 선택했습니다.`);
+  });
+  Object.entries(GROUP_SEMESTER_REQUIREMENTS).forEach(([group, requirements]) => {
+    Object.entries(requirements).forEach(([semester, required]) => {
+      const count = selectedByGroupAndSem(group, semester, map).length;
+      if (count !== required) errors.push(`선택군 ${group}: ${semester}에서 ${count}/${required}개 선택했습니다.`);
+    });
+  });
+  const kme = countKoreanMathEnglishChoices(map);
+  if (kme > KOREAN_MATH_ENGLISH_MAX) errors.push(`국어·수학·영어 선택과목은 최대 ${KOREAN_MATH_ENGLISH_MAX}개입니다. 현재 ${kme}개입니다.`);
+  return errors.concat(duplicateErrors(map));
+}
+function canAdd(subject) {
+  if (isFixed(subject)) return { ok: false, msg: "공통·필수 과목은 자동 이수 과목입니다." };
+  const future = { ...state.selected, [subject.id]: subject };
+  const groupCount = selectedUnitsByGroup(future)[subject.group] || 0;
+  if (groupCount > GROUP_MAX_LIMITS[subject.group]) {
+    return { ok: false, msg: `선택군 ${subject.group}은 ${GROUP_MAX_LIMITS[subject.group]}개만 선택할 수 있습니다.` };
+  }
+  const semesterLimit = GROUP_SEMESTER_REQUIREMENTS[subject.group]?.[subject.sem];
+  if (semesterLimit && selectedByGroupAndSem(subject.group, subject.sem, future).length > semesterLimit) {
+    return { ok: false, msg: `선택군 ${subject.group}은 ${subject.sem}에서 ${semesterLimit}개만 선택할 수 있습니다.` };
+  }
+  if (KOREAN_MATH_ENGLISH_CATEGORIES.has(subject.cat) && countKoreanMathEnglishChoices(future) > KOREAN_MATH_ENGLISH_MAX) {
+    return { ok: false, msg: `선택군의 국어·수학·영어 과목은 전체 합산 최대 ${KOREAN_MATH_ENGLISH_MAX}개입니다.` };
+  }
+  const duplicates = duplicateErrors(future);
+  return duplicates.length ? { ok: false, msg: duplicates[0] } : { ok: true };
+}
+function toggleSubject(semester, category, subject) {
+  const id = subjectId(semester, subject);
+  const item = { sem: semester, cat: category, ...subject, id };
+  if (state.selected[id]) {
+    if (isFixed(item)) return showToast("공통·필수 과목은 해제할 수 없습니다.");
+    delete state.selected[id];
+    renderAll();
+    return;
+  }
+  const check = canAdd(item);
+  if (!check.ok) return showToast(check.msg);
+  state.selected[id] = item;
+  renderAll();
+}
+function recommendationLevel(subject) {
+  if (!state.resultData) return "";
+  const normalized = normalizeName(subject.name);
+  if ((state.resultData.core || []).some((name) => normalizeName(name) === normalized)) return "core";
+  if ((state.resultData.rec || []).some((name) => normalizeName(name) === normalized)) return "rec";
+  if ((state.resultData.edu || []).some((name) => normalizeName(name) === normalized)) return "edu";
+  return "";
+}
+function recommendationTag(subject) {
+  const level = recommendationLevel(subject);
+  if (level === "core") return '<span class="badge rec-badge tag-core">★ 핵심</span>';
+  if (level === "rec") return '<span class="badge rec-badge tag-rec">◎ 권장</span>';
+  if (level === "edu") return '<span class="badge rec-badge tag-edu">○ 관련</span>';
+  return "";
+}
+function recommendationMark(subject) {
+  const level = recommendationLevel(subject);
+  if (level === "core") return '<span class="rec-label core" title="핵심 추천">핵심</span>';
+  if (level === "rec") return '<span class="rec-label rec" title="권장 추천">권장</span>';
+  if (level === "edu") return '<span class="rec-label edu" title="관련 추천">관련</span>';
+  return "";
+}
+function findSubject(semester, category, name) {
+  return (CURRICULUM[semester]?.[category] || []).find((subject) => subject.name === name);
+}
+function isKmeChoiceRow(row) {
+  return !isFixed(row) && KOREAN_MATH_ENGLISH_CATEGORIES.has(row.cat);
+}
+function assessmentText(subject) {
+  const normalized = normalizeName(subject.name);
+  if (subject.group === "K" || subject.cat === "교양" || normalized === normalizeName("논술")) return { text: "이수/미이수", cls: "eval-pass" };
+  if (ABSOLUTE_EVAL_SUBJECTS.some((name) => normalizeName(name) === normalized)) return { text: "성취도 5단계", cls: "eval-absolute" };
+  if (subject.cat === "예술" || ["스포츠생활1", "스포츠생활2", "스포츠문화", "스포츠과학"].includes(normalized)) return { text: "성취도 3단계", cls: "eval-3" };
+  return { text: "등급+성취도", cls: "eval-grade" };
+}
+function gradeSemesters(grade) {
+  if (grade === 1) return ["1-1", "1-2"];
+  if (grade === 2) return ["2-1", "2-2"];
+  return ["3-1", "3-2"];
+}
+function shouldShowByActiveSemester(semesters) {
+  return state.activeSem === "전체" || semesters.includes(state.activeSem);
+}
+function ruleLabelForGroup(code) {
+  if (code === "공통" || code === "필수") return "지정";
+  if (code === "B" || code === "J") return "학기별\n택1";
+  if (GROUP_SEMESTER_REQUIREMENTS[code]) return "학기별\n택1";
+  return `택${GROUP_MAX_LIMITS[code]}`;
+}
+function groupDisplayTitle(group, grade) {
+  if (group === "공통") return grade === 1 ? "1학년\n공통과목" : "학교\n지정과목";
+  if (group === "필수") return "학교\n지정과목";
+  return `선택군 ${group.code || group}`;
+}
+function groupCreditText(group, grade) {
+  if (group === "공통") return grade === 1 ? "총 58학점" : "";
+  if (group === "필수") return grade === 2 ? "총 30학점" : grade === 3 ? "총 20학점" : "";
+  const code = group.code || group;
+  return `${GROUP_MAX_LIMITS[code] * 3 === 3 && ["D","E","K"].includes(code) ? (code === "K" ? 2 : 2) : GROUP_MAX_LIMITS[code] * 3}학점`;
+}
+function fixedCreditTextForGrade(grade) {
+  if (grade === 1) return "총 58학점";
+  if (grade === 2) return "총 30학점";
+  return "총 20학점";
+}
+function choiceCreditText(code) {
+  const special = { D: 2, E: 2, H: 3, I: 3, K: 2 };
+  const value = special[code] || GROUP_MAX_LIMITS[code] * 3;
+  return `${value}학점`;
+}
+function collectRows(semesters, predicate) {
+  const rows = [];
+  const byKey = new Map();
+  semesters.forEach((semester) => CATEGORIES.forEach((category) => {
+    (CURRICULUM[semester]?.[category] || []).filter(predicate).forEach((subject) => {
+      const fixed = isFixed(subject);
+      const key = fixed ? `${category}|${subject.group}|${semester}|${normalizeName(subject.name)}` : `${category}|${subject.group}|${normalizeName(subject.name)}`;
+      if (!byKey.has(key)) {
+        byKey.set(key, { cat: category, group: subject.group, name: subject.name, type: subject.type, credit: subject.credit, subjects: {} });
+        rows.push(byKey.get(key));
+      }
+      byKey.get(key).subjects[semester] = { sem: semester, cat: category, ...subject, id: subjectId(semester, subject) };
+    });
+  }));
+  return rows.sort((a, b) => CATEGORIES.indexOf(a.cat) - CATEGORIES.indexOf(b.cat) || SEMESTERS.indexOf(Object.keys(a.subjects)[0]) - SEMESTERS.indexOf(Object.keys(b.subjects)[0]) || a.name.localeCompare(b.name, "ko"));
+}
+function renderLeafCheck(subject) {
+  const selected = Boolean(state.selected[subject.id]);
+  const recLevel = recommendationLevel(subject);
+  const recClass = recLevel ? `rec-${recLevel}` : "";
+  return `<button type="button" class="leaf-check ${selected ? "selected" : ""} ${recClass}" aria-label="${esc(subject.sem)} ${esc(subject.name)} 선택${selected ? "됨" : ""}" aria-pressed="${selected}" data-sem="${esc(subject.sem)}" data-cat="${esc(subject.cat)}" data-name="${esc(subject.name)}"></button>`;
+}
+function renderSemesterCell(row, semester) {
+  const subject = row.subjects[semester];
+  if (!subject) return '<span class="dash">-</span>';
+  if (isFixed(subject)) return `<span class="leaf-fixed-name">${esc(subject.name)}</span>`;
+  return renderLeafCheck(subject);
+}
+function renderSubjectNameCell(row) {
+  const firstSubject = Object.values(row.subjects)[0];
+  const recLevel = firstSubject ? recommendationLevel(firstSubject) : "";
+  const mark = firstSubject ? recommendationMark(firstSubject) : "";
+  const infoButton = firstSubject && !isFixed(firstSubject) ? `<button type="button" class="leaf-info" title="${esc(row.name)} 설명 보기" aria-label="${esc(row.name)} 설명 보기" data-sem="${esc(firstSubject.sem)}" data-cat="${esc(firstSubject.cat)}" data-name="${esc(firstSubject.name)}">과목 설명</button>` : "";
+  const kme = isKmeChoiceRow(row) ? " kme" : "";
+  const recClass = recLevel ? ` rec-cell rec-cell-${recLevel}` : "";
+  return `<td class="leaf-subject${kme}${recClass}">${mark}${esc(row.name)}${infoButton}</td>`;
+}
+function renderGroupRows(rows, groupTitle, creditText, ruleText, semesters, options = {}) {
+  if (!rows.length) return "";
+  const rowCount = rows.length;
+  return rows.map((row, index) => {
+    const firstSubject = Object.values(row.subjects)[0] || row;
+    const assessment = assessmentText(firstSubject);
+    const side = index === 0 ? `<td class="leaf-group-cell" rowspan="${rowCount}">${esc(groupTitle).replace(/\n/g, "<br>")}${creditText ? `<span class="credit">${esc(creditText)}</span>` : ""}</td>` : "";
+    const rule = index === 0 ? `<td class="leaf-rule" rowspan="${rowCount}">${esc(ruleText).replace(/\n/g, "<br>")}</td>` : "";
+    return `<tr>${side}<td class="leaf-cat">${esc(row.cat)}</td>${renderSubjectNameCell(row)}<td class="leaf-eval ${assessment.cls}">${esc(assessment.text)}</td>${semesters.map((semester) => `<td class="leaf-sem-cell">${renderSemesterCell(row, semester)}</td>`).join("")}${rule}</tr>`;
+  }).join("");
+}
+function renderLeafTable(title, subtitle, semesters, bodyRows, footnote = true, extraClass = "", titleNote = "", actionHtml = "") {
+  if (!bodyRows.trim()) return "";
+  const gradeLabel = title.includes("3학년") ? "3학년" : title.includes("2학년") ? "2학년" : "1학년";
+  return `<section class="leaflet-section ${extraClass}">
+    <div class="leaflet-section-head">
+      <div class="leaflet-section-title-text">
+        <h3 class="leaflet-title">${esc(title)}${titleNote ? `<span class="leaflet-title-note">${esc(titleNote)}</span>` : ""}</h3>
+        ${subtitle ? `<p class="leaflet-subtitle">${esc(subtitle)}</p>` : ""}
+      </div>
+      ${actionHtml ? `<div class="leaflet-section-action no-print">${actionHtml}</div>` : ""}
+    </div>
+    <div class="leaflet-table-wrap"><table class="leaflet-table">
+      <colgroup><col class="c-side"><col class="c-cat"><col class="c-subject"><col class="c-eval"><col class="c-sem"><col class="c-sem"><col class="c-rule"></colgroup>
+      <thead><tr><th rowspan="2">교과 영역</th><th rowspan="2">교과(군)</th><th rowspan="2">과목</th><th rowspan="2">성적 산출</th><th colspan="2">${esc(gradeLabel)}</th><th rowspan="2">지정/<br>선택</th></tr><tr>${semesters.map((semester) => `<th>${semester.endsWith("1") ? "1학기" : "2학기"}</th>`).join("")}</tr></thead>
+      <tbody>${bodyRows}</tbody>
+    </table></div>
+    ${footnote ? '<p class="leaf-footnote"><span class="sample"></span>표시된 과목은 2, 3학년 통틀어 <strong>최대 5과목</strong>만 선택할 수 있음.</p>' : ""}
+  </section>`;
+}
+function renderFirstYearCommon() {
+  const semesters = gradeSemesters(1);
+  if (!shouldShowByActiveSemester(semesters)) return "";
+  const rows = collectRows(semesters, (subject) => subject.group === "공통" || subject.group === "필수");
+  const body = renderGroupRows(rows, "1학년\n공통과목", fixedCreditTextForGrade(1), "지정", semesters);
+  const isOpen = Boolean(state.showFirstYearCommon);
+  const buttonText = isOpen ? "1학년 공통과목 숨기기" : "1학년 공통과목 보이기";
+  const table = `<div class="leaflet-table-wrap"><table class="leaflet-table">
+      <colgroup><col class="c-side"><col class="c-cat"><col class="c-subject"><col class="c-eval"><col class="c-sem"><col class="c-sem"><col class="c-rule"></colgroup>
+      <thead><tr><th rowspan="2">교과 영역</th><th rowspan="2">교과(군)</th><th rowspan="2">과목</th><th rowspan="2">성적 산출</th><th colspan="2">1학년</th><th rowspan="2">지정/<br>선택</th></tr><tr>${semesters.map((semester) => `<th>${semester.endsWith("1") ? "1학기" : "2학기"}</th>`).join("")}</tr></thead>
+      <tbody>${body}</tbody>
+    </table></div>`;
+  return `<section class="leaflet-section first-year-note first-year-toggle-card ${isOpen ? "expanded" : "collapsed"}">
+    <div class="leaflet-toggle-head">
+      <div>
+        <h3 class="leaflet-title">1학년 공통 이수 과목</h3>
+        <p class="leaflet-subtitle">현재 선택 결과 요약에 자동 반영되는 공통 과목입니다.</p>
+      </div>
+      <button type="button" class="toggle-btn no-print" id="firstYearToggle" aria-expanded="${isOpen}" aria-controls="firstYearCommonBody">${buttonText}</button>
+    </div>
+    ${isOpen ? `<div class="first-year-body" id="firstYearCommonBody">${table}</div>` : `<div class="first-year-collapsed" id="firstYearCommonBody">1학년 공통과목 표는 숨김 상태입니다. 필요할 때만 버튼을 눌러 확인하세요.</div>`}
+  </section>`;
+}
+function buildGradeLeafletData(grade) {
+  const semesters = gradeSemesters(grade);
+  let body = "";
+  const fixedRows = collectRows(semesters, (subject) => subject.group === "필수");
+  body += renderGroupRows(fixedRows, "학교\n지정과목", fixedCreditTextForGrade(grade), "지정", semesters);
+  const codes = grade === 2 ? ["A", "B", "C"] : ["D", "E", "F", "G", "H", "I", "J", "K"];
+  codes.forEach((code) => {
+    const rows = collectRows(semesters, (subject) => subject.group === code);
+    const rule = ruleLabelForGroup(code);
+    body += renderGroupRows(rows, `선택군 ${code}`, choiceCreditText(code), rule, semesters);
+  });
+  return { semesters, body };
+}
+function renderGradeLeaflet(grade) {
+  const semesters = gradeSemesters(grade);
+  if (!shouldShowByActiveSemester(semesters)) return "";
+  const data = buildGradeLeafletData(grade);
+  const title = grade === 2 ? "2학년 선택과목" : "미리보는 3학년 선택과목";
+  const titleNote = grade === 2 ? "2027년에 수업 듣는 과목" : "2028년 수업 듣는 과목이며 내년에 수강신청 예정";
+  const subtitle = grade === 2 ? "리플렛 표의 흐름을 유지하면서 클릭으로 선택 조건을 확인합니다." : "3학년 선택군도 같은 방식으로 미리 점검합니다.";
+  return renderLeafTable(title, subtitle, data.semesters, data.body, true, "", titleNote);
+}
+function renderThirdYearPreview() {
+  const semesters = gradeSemesters(3);
+  if (!shouldShowByActiveSemester(semesters)) return "";
+  const isOpen = Boolean(state.showThirdYearPreview);
+  const title = "미리보는 3학년 선택과목";
+  const titleNote = "2028년 수업 듣는 과목이며 내년에 수강신청 예정";
+  const buttonText = isOpen ? "미리보는 3학년 선택과목 숨기기" : "미리보는 3학년 선택과목 보이기";
+  const button = `<button type="button" class="toggle-btn" id="thirdYearToggle" aria-expanded="${isOpen}" aria-controls="thirdYearPreviewBody">${buttonText}</button>`;
+  if (!isOpen) {
+    return `<section class="leaflet-section third-year-toggle-card collapsed">
+      <div class="leaflet-section-head">
+        <div class="leaflet-section-title-text">
+          <h3 class="leaflet-title">${esc(title)}<span class="leaflet-title-note">${esc(titleNote)}</span></h3>
+          <p class="leaflet-subtitle">3학년 선택과목 표는 숨김 상태입니다. 필요할 때만 버튼을 눌러 확인하세요.</p>
+        </div>
+        <div class="leaflet-section-action no-print">${button}</div>
+      </div>
+      <div class="third-year-collapsed" id="thirdYearPreviewBody">미리보는 3학년 선택과목은 접어 두었습니다.</div>
+    </section>`;
+  }
+  const data = buildGradeLeafletData(3);
+  return renderLeafTable(title, "3학년 선택군도 같은 방식으로 미리 점검합니다.", data.semesters, data.body, true, "third-year-toggle-card expanded", titleNote, button).replace('class="leaflet-table-wrap"', 'id="thirdYearPreviewBody" class="leaflet-table-wrap"');
+}
+function bindSubjectEvents(root) {
+  root.querySelectorAll(".leaf-check").forEach((button) => {
+    const activate = () => {
+      const subject = findSubject(button.dataset.sem, button.dataset.cat, button.dataset.name);
+      if (subject) toggleSubject(button.dataset.sem, button.dataset.cat, subject);
+    };
+    button.addEventListener("click", (event) => { event.preventDefault(); event.stopPropagation(); activate(); });
+  });
+  root.querySelectorAll(".leaf-info").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      state.lastFocus = button;
+      const subject = findSubject(button.dataset.sem, button.dataset.cat, button.dataset.name);
+      showDescription(button.dataset.sem, button.dataset.cat, subject);
+    });
+  });
+  const firstYearToggle = root.querySelector("#firstYearToggle");
+  if (firstYearToggle) {
+    firstYearToggle.addEventListener("click", () => {
+      state.showFirstYearCommon = !state.showFirstYearCommon;
+      renderAll();
+    });
+  }
+  const thirdYearToggle = root.querySelector("#thirdYearToggle");
+  if (thirdYearToggle) {
+    thirdYearToggle.addEventListener("click", () => {
+      state.showThirdYearPreview = !state.showThirdYearPreview;
+      renderAll();
+    });
+  }
+  const resetTop = root.querySelector("#resetBtnTop");
+  if (resetTop) resetTop.addEventListener("click", resetSelections);
+}
+function renderGradeTopActions() {
+  if (!shouldShowByActiveSemester(gradeSemesters(2))) return "";
+  return `<div class="grade-reset-bar no-print"><span class="small">선택을 처음부터 다시 하려면 초기화하세요.</span><button type="button" class="btn ghost" id="resetBtnTop">선택 초기화</button></div>`;
+}
+function renderTable() {
+  const root = document.getElementById("curriculumTable");
+  root.innerHTML = renderFirstYearCommon() + renderGradeTopActions() + renderGradeLeaflet(2) + renderThirdYearPreview();
+  bindSubjectEvents(root);
+}
+function buildSubjectDetail(category, subject) {
+  const info = getSubjectCharacter(category, subject.name);
+  const summary = String(info.summary || `${subject.name}의 기본 개념과 활용 방법을 학습하는 과목입니다.`).trim();
+  const firstPeriod = summary.indexOf(".");
+  const oneLine = firstPeriod >= 0 ? summary.slice(0, firstPeriod + 1) : summary;
+  const learning = `${summary}${summary.endsWith(".") ? "" : "."} ${LEARNING_FOCUS[category] || "핵심 개념을 이해하고 탐구 활동을 통해 실제 문제에 적용합니다."}`;
+  return {
+    oneLine,
+    learning,
+    recommend: RECOMMEND_BY_CATEGORY[category] || "이 과목의 주제에 관심이 있고 탐구 활동을 통해 진로 역량을 키우고 싶은 학생에게 추천합니다.",
+    career: CAREER_OVERRIDES[subject.name] || CAREER_BY_CATEGORY[category] || "관련 교과 전공 및 융합 분야",
+    source: info.source || "경남교육청 2026 선택 과목 뭐하지? 및 일반적인 과목 성격"
+  };
+}
+function showDescription(semester, category, subject) {
+  if (!subject) return;
+  const detail = buildSubjectDetail(category, subject);
+  document.getElementById("descTitle").textContent = subject.name;
+  document.getElementById("descMeta").innerHTML = `<span class="badge">${esc(category)}</span><span class="badge">${esc(semester)}</span><span class="badge">${subject.credit}학점</span><span class="badge">${esc(subject.type)}</span><span class="badge">선택군 ${esc(subject.group)}</span>`;
+  document.getElementById("descOneLine").textContent = detail.oneLine;
+  document.getElementById("descLearning").textContent = detail.learning;
+  document.getElementById("descRecommend").textContent = detail.recommend;
+  document.getElementById("descCareer").textContent = detail.career;
+  document.getElementById("descSource").textContent = `출처·참고: 경상남도교육청 「2026 선택 과목 뭐하지?」 ${detail.source} · 웅천고 2026학년도 입학생 3개년 교육과정 편성표`;
+  document.getElementById("descModal").classList.add("show");
+  document.getElementById("descClose").focus();
+}
+function closeDescription() {
+  document.getElementById("descModal").classList.remove("show");
+  if (state.lastFocus?.isConnected) state.lastFocus.focus();
+}
+function renderTabs() {
+  const element = document.getElementById("semesterTabs");
+  element.innerHTML = ["전체", ...SEMESTERS].map((tab) => `<button type="button" class="tab ${state.activeSem === tab ? "active" : ""}" data-tab="${tab}">${tab}</button>`).join("");
+  element.querySelectorAll(".tab").forEach((button) => button.addEventListener("click", () => {
+    state.activeSem = button.dataset.tab;
+    renderAll();
+  }));
+}
+function renderLegend() {
+  const legend = document.getElementById("groupLegend");
+  if (!legend) return;
+  legend.innerHTML = "";
+}
+function renderSummaryCards() {
+  const selected = Object.values(state.selected);
+  const choices = selected.filter((subject) => !isFixed(subject));
+  const fixedCredits = sumCredits(selected.filter(isFixed));
+  const choiceCredits = sumCredits(choices);
+  const totalCredits = fixedCredits + choiceCredits;
+  const kme = countKoreanMathEnglishChoices();
+  const grade2 = gradeValidationStatus(2);
+  const grade3 = gradeValidationStatus(3);
+  document.getElementById("summaryCards").innerHTML = `
+    <div class="summary-card"><b>2학년 선택</b><strong style="color:${grade2.complete ? "#047857" : "#b91c1c"}">${grade2.selectedCount}/${grade2.requiredCount}</strong></div>
+    <div class="summary-card"><b>3학년 미리보기</b><strong style="color:${grade3.complete ? "#047857" : "#4c1d95"}">${grade3.selectedCount}/${grade3.requiredCount}</strong></div>
+    <div class="summary-card"><b>선택 과목 전체</b><strong>${choices.length}/${EXPECTED_CHOICE_COUNT}</strong></div>
+    <div class="summary-card"><b>현재 총 학점</b><strong>${totalCredits}/${EXPECTED_TOTAL_CREDITS}</strong></div>
+    <div class="summary-card"><b>국수영 선택</b><strong style="color:${kme > KOREAN_MATH_ENGLISH_MAX ? "#b91c1c" : "#4c1d95"}">${kme}/${KOREAN_MATH_ENGLISH_MAX}</strong></div>`;
+  const globalKmeClass = kme <= KOREAN_MATH_ENGLISH_MAX ? "good" : "error";
+  const globalKmeMessage = kme <= KOREAN_MATH_ENGLISH_MAX
+    ? `국어·수학·영어 선택과목 제한을 만족합니다. 현재 ${kme}/${KOREAN_MATH_ENGLISH_MAX}개입니다.`
+    : `국어·수학·영어 선택과목은 최대 ${KOREAN_MATH_ENGLISH_MAX}개입니다. 현재 ${kme}개입니다.`;
+  document.getElementById("validationBox").innerHTML = `
+    <div class="validation-split">
+      ${renderGradeValidationPanel(grade2)}
+      ${renderGradeValidationPanel(grade3, { optional: true })}
+    </div>
+    <div class="validation-overview compact ${globalKmeClass}"><b>국어·수학·영어 선택 제한</b><div class="validation-detail">${esc(globalKmeMessage)}</div></div>`;
+}
+function renderSelectedSummary() {
+  const studentName = document.getElementById("studentName").value.trim() || "학생";
+  const grouped = Object.fromEntries(SEMESTERS.map((semester) => [semester, []]));
+  Object.values(state.selected).sort((a, b) => SEMESTERS.indexOf(a.sem) - SEMESTERS.indexOf(b.sem) || CATEGORIES.indexOf(a.cat) - CATEGORIES.indexOf(b.cat))
+    .forEach((subject) => grouped[subject.sem].push(subject));
+  const choiceSubjects = Object.values(state.selected).filter((subject) => !isFixed(subject));
+  const choiceCredits = sumCredits(choiceSubjects);
+  const totalCredits = sumCredits(Object.values(state.selected));
+  const grade2 = gradeValidationStatus(2);
+  const grade3 = gradeValidationStatus(3);
+  let html = `<p class="total-line">${esc(studentName)} · 2학년 선택 ${grade2.selectedCount}/${grade2.requiredCount}개${grade2.complete ? " 완료" : ""} · 3학년 미리보기 ${grade3.selectedCount}/${grade3.requiredCount}개${grade3.complete ? " 완료" : ""} · 전체 선택학점 ${choiceCredits}/${EXPECTED_CHOICE_CREDITS}학점 · 현재 총 ${totalCredits}/${EXPECTED_TOTAL_CREDITS}학점</p><div class="selected-list">`;
+  SEMESTERS.forEach((semester) => {
+    const semesterCredits = sumCredits(grouped[semester]);
+    html += `<div class="sem-list"><h4>${semester} <span class="small">${semesterCredits}학점</span></h4><ul>${grouped[semester].length ? grouped[semester].map((subject) => `<li>${esc(subject.name)} <span class="small">${esc(subject.cat)} · ${esc(subject.group)} · ${subject.credit}학점</span></li>`).join("") : '<li class="small">과목 없음</li>'}</ul></div>`;
+  });
+  document.getElementById("selectedSummary").innerHTML = `${html}</div>`;
+}
+function subjectAvailabilityLabel(name) {
+  const normalized = normalizeName(name);
+  const matches = getAllSubjects().filter((subject) => normalizeName(subject.name) === normalized);
+  if (!matches.length) return { cls: "unavailable", title: "본교 미개설 추천 과목" };
+  if (matches.some((subject) => !isFixed(subject))) return { cls: "available", title: "본교 선택 가능 과목" };
+  return { cls: "fixed-rec", title: "공통·필수 자동 이수 과목" };
+}
+function renderRecommendationList(names) {
+  if (!names?.length) return '<li class="small">없음</li>';
+  return names.map((name) => {
+    const status = subjectAvailabilityLabel(name);
+    return `<li class="${status.cls}" title="${esc(status.title)}">${esc(name)}</li>`;
+  }).join("");
+}
+function renderResult() {
+  const panel = document.getElementById("resultPanel");
+  if (!state.resultData) { panel.style.display = "none"; return; }
+  const result = state.resultData;
+  panel.style.display = "block";
+  panel.innerHTML = `<div class="result-head"><div><h2 style="margin:0">${esc(result.dept)}</h2><p class="small">${esc(result.track)} · ${esc(result.info?.desc || "")}</p><p>${esc(result.info?.strategy || "")}</p><p class="small">추천 목록에서 회색 취소선은 본교 선택표에 없는 참고 과목입니다. 표 안에서 핵심·권장·관련 글자 배지와 과목 칸 색으로 실제 선택 가능한 추천 과목을 표시합니다.</p></div><div class="rec-lists"><div class="rec-box"><h4 style="color:var(--core)">핵심</h4><ul>${renderRecommendationList(result.core || [])}</ul></div><div class="rec-box"><h4 style="color:var(--rec)">권장</h4><ul>${renderRecommendationList(result.rec || [])}</ul></div><div class="rec-box"><h4 style="color:var(--edu)">관련</h4><ul>${renderRecommendationList(result.edu || [])}</ul></div></div></div>`;
+}
+function handleSearch() {
+  const trackSelect = document.getElementById("trackSelect");
+  const input = document.getElementById("deptInput").value.trim();
+  const alertBox = document.getElementById("searchAlert");
+  let matchRules = null;
+  let departmentName = "";
+  let matchedTrack = trackSelect.value;
+  alertBox.classList.add("hide");
+  alertBox.textContent = "";
+  if (input) {
+    outerExact: for (const [trackName, departments] of Object.entries(RULES)) {
+      for (const [name, rules] of Object.entries(departments)) {
+        if (name === input || name.split("/").includes(input) || name.split("/").some((part) => input.includes(part))) {
+          matchRules = rules; departmentName = name; matchedTrack = trackName; break outerExact;
+        }
+      }
+    }
+    if (!matchRules) {
+      outerPartial: for (const [trackName, departments] of Object.entries(RULES)) {
+        for (const [name, rules] of Object.entries(departments)) {
+          const clean = name.replace(/학과$|과$|학$|계열$/g, "");
+          if (name.includes(input) || (clean && input.includes(clean))) {
+            matchRules = rules; departmentName = name; matchedTrack = trackName; break outerPartial;
+          }
+        }
+      }
+    }
+    if (!matchRules) {
+      for (const [keyword, trackName] of Object.entries(KEYWORD_MAP)) {
+        if (input.includes(keyword)) {
+          matchedTrack = trackName; matchRules = RULES[trackName][trackName]; departmentName = `${input} (계열 포괄 추천)`; break;
+        }
+      }
+    }
+    if (!matchRules && matchedTrack) {
+      matchRules = RULES[matchedTrack][matchedTrack];
+      departmentName = `${input} (계열 포괄 추천)`;
+    }
+    if (!matchRules) {
+      alertBox.textContent = `"${input}"에 대한 추천 데이터를 찾지 못했습니다. 진로 계열을 직접 선택해 주세요.`;
+      alertBox.classList.remove("hide");
+      return;
+    }
+  } else {
+    if (!matchedTrack) return showToast("희망 학과명이나 진로 계열을 입력해 주세요.");
+    matchRules = RULES[matchedTrack][matchedTrack];
+    departmentName = `${matchedTrack} 공통 가이드`;
+  }
+  trackSelect.value = matchedTrack;
+  state.resultData = { track: matchedTrack, dept: departmentName, core: matchRules.core || [], rec: matchRules.rec || [], edu: matchRules.edu || [], info: TRACK_INFO[matchedTrack] || {} };
+  renderAll();
+}
+function renderAll() {
+  renderTabs();
+  renderResult();
+  renderSummaryCards();
+  renderTable();
+  renderSelectedSummary();
+  persistDraft();
+}
+function init() {
+  const trackSelect = document.getElementById("trackSelect");
+  trackSelect.innerHTML = '<option value="">계열 선택</option>' + Object.keys(RULES).map((track) => `<option value="${esc(track)}">${esc(track)}</option>`).join("");
+  const departmentNames = [...new Set(Object.values(RULES).flatMap((departments) => Object.keys(departments)))].sort((a, b) => a.localeCompare(b, "ko"));
+  document.getElementById("deptSuggestions").innerHTML = departmentNames.map((name) => `<option value="${esc(name)}"></option>`).join("");
+  autoSelectRequired();
+  askRestoreDraft();
+  state.saveReady = true;
+  renderAll();
+  document.getElementById("searchBtn").addEventListener("click", handleSearch);
+  document.getElementById("deptInput").addEventListener("keydown", (event) => { if (event.key === "Enter") handleSearch(); });
+  document.getElementById("deptInput").addEventListener("input", persistDraft);
+  document.getElementById("trackSelect").addEventListener("change", persistDraft);
+  document.getElementById("studentName").addEventListener("input", () => { renderSelectedSummary(); persistDraft(); });
+  document.getElementById("resetBtn").addEventListener("click", resetSelections);
+  document.getElementById("printBtn").addEventListener("click", () => window.print());
+  document.getElementById("descClose").addEventListener("click", closeDescription);
+  document.getElementById("descModal").addEventListener("click", (event) => {
+    if (event.target.id === "descModal") closeDescription();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.getElementById("descModal").classList.contains("show")) closeDescription();
+  });
+}
+init();
+</script>
+</body>
+</html>

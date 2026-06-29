@@ -6,26 +6,19 @@
 
 - [웅천고등학교 업무 웹툴 모음](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/)
 - [과목 선택 도우미](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/course-selection.html)
+- [1학년 과목 선택 도우미](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/course-selection-grade1.html)
+- [2학년 과목 선택 도우미](https://mathtjungsw.github.io/ungcheon-high-school-work-tools/course-selection-grade2.html)
 
 ## 주요 기능
 
-- 웹툴 제목, 링크, 설명 등록
-- 등록한 웹툴 수정 및 삭제
-- 제목·설명 실시간 검색
-- 브라우저 로컬 저장
-- JSON 파일 백업 및 복원
+- 코드에 등록된 학교 업무 웹툴 제공
+- 제목·설명·담당 부서 실시간 검색
+- 담당 부서 태그 표시
 - 데스크톱·태블릿·모바일 반응형 화면
 
-## 사용 방법
+## 웹툴 관리
 
-1. 페이지 오른쪽 위의 **웹툴 추가** 버튼을 누릅니다.
-2. 제목, 링크, 설명을 입력하고 **추가하기**를 누릅니다.
-3. 카드 오른쪽 위의 메뉴에서 내용을 수정하거나 삭제할 수 있습니다.
-4. **백업** 버튼으로 등록한 목록을 JSON 파일로 저장할 수 있습니다.
-
-## 데이터 저장 안내
-
-등록한 웹툴은 사용하는 브라우저의 `localStorage`에 저장됩니다. 다른 컴퓨터나 브라우저로 옮길 때는 **백업**과 **백업 파일 불러오기** 기능을 사용하세요.
+웹툴은 `app.js`의 `TOOLS` 목록에서 관리합니다. 방문자가 화면에서 웹툴을 추가·수정·삭제할 수는 없습니다.
 
 ## 로컬 실행
 

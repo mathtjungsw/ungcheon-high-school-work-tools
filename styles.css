@@ -560,6 +560,20 @@ svg {
   justify-content: space-between;
 }
 
+.tool-department {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid #dbe5f2;
+  border-radius: 999px;
+  color: #40516a;
+  background: #f4f7fb;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .tool-icon {
   display: grid;
   width: 45px;
