@@ -55,8 +55,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .validation-detail{color:inherit;margin-top:6px;font-size:12px}
 @media(max-width:780px){.validation-split{grid-template-columns:1fr}}
 .current-impact-panel{border:2px solid #1e40af;background:#eff6ff;border-radius:6px;padding:13px;margin:4px 0 12px}.current-impact-panel h3{margin:0;font-size:20px}.current-impact-panel .small{margin-top:4px}.impact-choice-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:10px}.impact-choice-card{display:flex;flex-direction:column;gap:5px;text-align:left;border:1.5px solid #475569;border-radius:6px;background:#fff;padding:10px;cursor:pointer;font-weight:900;min-height:86px}.impact-choice-card:hover{background:#f8fbff}.impact-choice-card.selected{background:#dbeafe;border-color:#123f91;box-shadow:inset 0 0 0 2px rgba(18,63,145,.18)}.impact-choice-card .impact-meta{font-size:11px;color:#64748b;font-weight:800}.impact-choice-card .impact-status{margin-top:auto;align-self:flex-start;border:1px solid currentColor;border-radius:999px;padding:2px 8px;font-size:11px;color:#123f91;background:#fff}.second-year-toggle-card{border:2px dashed #94a3b8;padding:12px;background:#f8fbff}.second-year-collapsed{margin-top:10px;border:1.2px solid #cbd5e1;background:#fff;padding:10px 12px;color:#475569;font-weight:800}
+.third-year-share-wrap{margin-top:18px}.third-year-share-label{margin:0 0 7px;color:#475569;font-size:12px;font-weight:800}.third-year-share-capture{width:min(760px,100%);margin:0 auto;border:2px solid #123f91;border-radius:12px;background:#fff;padding:28px;color:#0f172a}.third-year-share-head{border-bottom:3px solid #123f91;padding-bottom:14px;margin-bottom:16px}.third-year-share-head h3{margin:0;color:#123f91;font-size:28px;letter-spacing:-.045em}.third-year-share-subtitle{margin:4px 0 0;color:#475569;font-size:16px;font-weight:900}.third-year-share-student{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 16px;padding:12px 14px;border-radius:8px;background:#eff6ff;font-size:15px}.third-year-share-student strong{color:#123f91}.third-year-share-semesters{display:grid;grid-template-columns:1fr 1fr;gap:12px}.third-year-share-semester{border:1.5px solid #94a3b8;border-radius:8px;overflow:hidden;background:#fff}.third-year-share-semester h4{margin:0;padding:10px 12px;background:#dfe9f9;color:#123f91;font-size:18px}.third-year-share-subjects{list-style:none;margin:0;padding:4px 12px}.third-year-share-subjects li{padding:9px 0;border-bottom:1px solid #e2e8f0;font-size:14px;font-weight:800;word-break:keep-all}.third-year-share-subjects li:last-child{border-bottom:0}.third-year-share-empty{color:#64748b;font-weight:700!important}.third-year-share-impact{margin-top:14px;padding:12px 14px;border:1.5px solid #f59e0b;border-radius:8px;background:#fffbeb}.third-year-share-impact h4{margin:0 0 6px;color:#92400e;font-size:14px}.third-year-share-impact p{margin:0;font-size:13px;font-weight:800}.share-btn{background:#fee500;color:#191919;border-color:#191919}.share-btn:hover{filter:brightness(.96)}
 @media(max-width:930px){.impact-choice-grid{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:680px){.impact-choice-grid{grid-template-columns:1fr}}
+@media(max-width:680px){.impact-choice-grid{grid-template-columns:1fr}.third-year-share-capture{padding:20px 16px}.third-year-share-head h3{font-size:23px}.third-year-share-semesters{grid-template-columns:1fr}}
 
 @media(max-width:930px){.row{grid-template-columns:1fr 1fr}.row .btn{height:42px}.result-head{grid-template-columns:1fr}.summary{grid-template-columns:repeat(3,1fr)}.validation-grid{grid-template-columns:repeat(4,1fr)}.rec-lists{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.leaflet-section-head,.leaflet-toggle-head{align-items:flex-start;flex-direction:column}.leaflet-title-note{margin-left:0;margin-top:6px}.leaflet-section-action,.leaflet-section-action .toggle-btn{width:100%}.toggle-btn{width:100%}.leaflet-toggle-head .leaflet-subtitle{margin-left:0}.wrap{padding:10px 7px 38px}.hero{padding:16px 13px}.hero p{margin-left:0}.panel{padding:11px}.row,.summary,.rec-lists,.selected-list{grid-template-columns:1fr}.validation-grid{grid-template-columns:repeat(3,1fr)}.footer-actions{width:100%;justify-content:stretch}.footer-actions .btn{flex:1}.leaflet-title{font-size:21px}.leaflet-subtitle{margin-left:0}.leaflet-table{min-width:800px}.modal-backdrop{padding:8px}.desc-box{max-height:94vh}}
@@ -113,9 +114,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
       <div class="footer-actions no-print">
         <button class="btn ghost" id="resetBtn" type="button">선택 초기화</button>
         <button class="btn secondary" id="printBtn" type="button">인쇄 / PDF 저장</button>
+        <button class="btn ghost" id="saveImageBtn" type="button">결과 이미지 저장</button>
+        <button class="btn share-btn" id="kakaoShareBtn" type="button">카카오톡으로 보내기</button>
       </div>
     </div>
     <div id="selectedSummary" style="margin-top:12px"></div>
+    <div class="third-year-share-wrap no-print">
+      <p class="third-year-share-label">카카오톡 공유 이미지 미리보기 (버튼과 2학년 전체 과목표는 이미지에 포함되지 않습니다.)</p>
+      <article class="third-year-share-capture" id="thirdYearShareCapture" aria-label="3학년 선택과목 공유 이미지"></article>
+    </div>
   </section>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -137,6 +144,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
     </div>
   </article>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
         const CATEGORIES = ["국어", "수학", "영어", "사회", "과학", "체육", "예술", "정보", "제2외국어/한문", "교양"];
         const SEMESTERS = ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2"];
@@ -2509,6 +2517,138 @@ function renderSelectedSummary() {
   });
   document.getElementById("selectedSummary").innerHTML = `${html}</div>`;
 }
+function getThirdYearShareSubjects() {
+  const result = { "3-1": [], "3-2": [] };
+  Object.values(state.selected)
+    .filter((subject) => !isFixed(subject) && Object.prototype.hasOwnProperty.call(result, subject.sem))
+    .sort((a, b) => CATEGORIES.indexOf(a.cat) - CATEGORIES.indexOf(b.cat) || a.name.localeCompare(b.name, "ko"))
+    .forEach((subject) => result[subject.sem].push(subject));
+  return result;
+}
+function getSelectedImpactSubjects() {
+  return CURRENT_IMPACT_SUBJECTS.map((target) => {
+    const subject = findSubject(target.sem, target.cat, target.name);
+    return subject && state.selected[subjectId(target.sem, subject)] ? subject : null;
+  }).filter(Boolean);
+}
+function renderThirdYearShareCapture() {
+  const capture = document.getElementById("thirdYearShareCapture");
+  if (!capture) return;
+  const studentName = getInputValue("studentName").trim() || "학생";
+  const department = getInputValue("deptInput").trim();
+  const track = getInputValue("trackSelect").trim();
+  const grouped = getThirdYearShareSubjects();
+  const semesterHtml = ["3-1", "3-2"].map((semester) => {
+    const items = grouped[semester];
+    return `<section class="third-year-share-semester">
+      <h4>${semester}학기</h4>
+      <ul class="third-year-share-subjects">${items.length
+        ? items.map((subject) => `<li>${esc(subject.name)} / 선택군${esc(subject.group)} / ${esc(subject.cat)} / ${subject.credit}학점</li>`).join("")
+        : '<li class="third-year-share-empty">선택한 과목이 없습니다.</li>'}</ul>
+    </section>`;
+  }).join("");
+  const careerItems = [
+    department ? `<span><strong>희망 학과</strong> ${esc(department)}</span>` : "",
+    track ? `<span><strong>진로 계열</strong> ${esc(track)}</span>` : ""
+  ].filter(Boolean).join("");
+  const impactSubjects = getSelectedImpactSubjects();
+  const impactHtml = impactSubjects.length
+    ? `<section class="third-year-share-impact"><h4>3학년 선택에 영향을 주는 현재 수강 과목</h4><p>${impactSubjects.map((subject) => esc(subject.name)).join(" · ")}</p></section>`
+    : "";
+  capture.innerHTML = `
+    <header class="third-year-share-head">
+      <h3>웅천고 3학년 선택과목 결과</h3>
+      <p class="third-year-share-subtitle">2027년 수업 듣는 과목</p>
+    </header>
+    <div class="third-year-share-student"><span><strong>학생 이름</strong> ${esc(studentName)}</span>${careerItems}</div>
+    <div class="third-year-share-semesters">${semesterHtml}</div>
+    ${impactHtml}`;
+}
+function getShareFileName() {
+  const studentName = getInputValue("studentName").trim() || "학생";
+  const safeName = studentName.replace(/[\\/:*?"<>|]/g, "_");
+  return `${safeName}_3학년과목선택결과.png`;
+}
+function canvasToBlob(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("PNG 이미지 변환에 실패했습니다.")), "image/png");
+  });
+}
+function downloadShareImage(blob, fileName = getShareFileName()) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+async function createThirdYearShareImage() {
+  if (typeof window.html2canvas !== "function") {
+    showToast("이미지 생성 기능을 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.");
+    return null;
+  }
+  renderThirdYearShareCapture();
+  const capture = document.getElementById("thirdYearShareCapture");
+  try {
+    const canvas = await window.html2canvas(capture, {
+      backgroundColor: "#ffffff",
+      scale: Math.min(window.devicePixelRatio || 1, 2),
+      useCORS: true,
+      logging: false
+    });
+    return await canvasToBlob(canvas);
+  } catch (error) {
+    console.error("3학년 선택과목 이미지 생성에 실패했습니다.", error);
+    showToast("결과 이미지를 만들지 못했습니다. 잠시 후 다시 시도해 주세요.");
+    return null;
+  }
+}
+async function saveThirdYearShareImage() {
+  const blob = await createThirdYearShareImage();
+  if (!blob) return;
+  downloadShareImage(blob);
+  showToast("3학년 선택과목 결과 이미지를 저장했습니다.");
+}
+async function shareThirdYearImage() {
+  const blob = await createThirdYearShareImage();
+  if (!blob) return;
+  const fileName = getShareFileName();
+  if (typeof File !== "function") {
+    downloadShareImage(blob, fileName);
+    showToast("이 브라우저에서는 직접 공유가 어려워 이미지를 저장했습니다. 저장한 파일을 카카오톡에 첨부해 주세요.");
+    return;
+  }
+  const file = new File([blob], fileName, { type: "image/png" });
+  const shareData = {
+    files: [file],
+    title: "웅천고 3학년 선택과목 결과",
+    text: "2027년 수업 듣는 과목"
+  };
+  let canShareFile = false;
+  try {
+    canShareFile = typeof navigator.share === "function"
+      && typeof navigator.canShare === "function"
+      && navigator.canShare({ files: [file] });
+  } catch (error) {
+    console.warn("브라우저가 이미지 파일 공유 여부를 확인하지 못했습니다.", error);
+  }
+  if (canShareFile) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        showToast("공유를 취소했습니다.");
+        return;
+      }
+      console.warn("파일 공유에 실패해 이미지를 저장합니다.", error);
+    }
+  }
+  downloadShareImage(blob, fileName);
+  showToast("이 브라우저에서는 직접 공유가 어려워 이미지를 저장했습니다. 저장한 파일을 카카오톡에 첨부해 주세요.");
+}
 function subjectAvailabilityLabel(name) {
   const normalized = normalizeName(name);
   const matches = getAllSubjects().filter((subject) => normalizeName(subject.name) === normalized);
@@ -2588,6 +2728,7 @@ function renderAll() {
   renderSummaryCards();
   renderTable();
   renderSelectedSummary();
+  renderThirdYearShareCapture();
   persistDraft();
 }
 function init() {
@@ -2603,9 +2744,13 @@ function init() {
   document.getElementById("deptInput").addEventListener("keydown", (event) => { if (event.key === "Enter") handleSearch(); });
   document.getElementById("deptInput").addEventListener("input", persistDraft);
   document.getElementById("trackSelect").addEventListener("change", persistDraft);
-  document.getElementById("studentName").addEventListener("input", () => { renderSelectedSummary(); persistDraft(); });
+  document.getElementById("studentName").addEventListener("input", () => { renderSelectedSummary(); renderThirdYearShareCapture(); persistDraft(); });
+  document.getElementById("deptInput").addEventListener("input", renderThirdYearShareCapture);
+  document.getElementById("trackSelect").addEventListener("change", renderThirdYearShareCapture);
   document.getElementById("resetBtn").addEventListener("click", resetSelections);
   document.getElementById("printBtn").addEventListener("click", () => window.print());
+  document.getElementById("saveImageBtn").addEventListener("click", saveThirdYearShareImage);
+  document.getElementById("kakaoShareBtn").addEventListener("click", shareThirdYearImage);
   document.getElementById("descClose").addEventListener("click", closeDescription);
   document.getElementById("descModal").addEventListener("click", (event) => {
     if (event.target.id === "descModal") closeDescription();
